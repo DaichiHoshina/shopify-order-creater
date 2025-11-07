@@ -1,0 +1,68 @@
+{
+  "description": "TC-CALC-001: 単品購入×キャンペーンID6：クーポンが適用される（ヤマト運輸）",
+  "test_id": "TC-CALC-001",
+  "order": {
+    "email": "customer@example.com",
+    "fulfillment_status": "unfulfilled",
+    "send_receipt": false,
+    "send_fulfillment_receipt": false,
+    "note": "テスト注文: 単品購入・ヤマト運輸・クーポン適用テスト",
+    "tags": "test, campaign, coupon-applied, single-purchase, yamato",
+    "line_items": [
+      {
+        "variant_id": null,
+        "quantity": 1,
+        "title": "テスト商品A",
+        "price": "1000.00",
+        "grams": 500,
+        "sku": "TEST-SKU-001",
+        "requires_shipping": true
+      }
+    ],
+    "shipping_address": {
+      "first_name": "太郎",
+      "last_name": "山田",
+      "company": null,
+      "address1": "1-1-1",
+      "address2": "テストビル101",
+      "city": "大阪市北区",
+      "province": "大阪府",
+      "province_code": "JP-27",
+      "country": "Japan",
+      "country_code": "JP",
+      "zip": "530-0001",
+      "phone": "06-1234-5678"
+    },
+    "shipping_lines": [
+      {
+        "title": "ヤマト運輸 宅急便 60サイズ",
+        "price": "1.00",
+        "code": "YAMATO_TAKKYUBIN_60",
+        "source": "plusshipping"
+      }
+    ],
+    "financial_status": "pending"
+  },
+  "shipping_metadata": {
+    "carrier": "yamato",
+    "service_type": "YAMATO_SERVICE_TYPE_TAKKYUBIN",
+    "service_code": "YM:000",
+    "packing_size": 60,
+    "consignor_prefecture": "東京都",
+    "destination_prefecture": "大阪府",
+    "purchase_type": "single",
+    "campaign_id": 6,
+    "campaign_name": "配送料1円！年末商戦応援キャンペーン！",
+    "expected_fee": 1,
+    "expected_discount": 599,
+    "base_fee": 500,
+    "option_fee": 100
+  },
+  "test_expectations": {
+    "coupon_applied": true,
+    "total_shipping_fee": 1,
+    "campaign_id": 6,
+    "remaining_count_before": 5,
+    "remaining_count_after": 4
+  }
+}

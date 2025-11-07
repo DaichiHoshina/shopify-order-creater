@@ -1,0 +1,55 @@
+{
+  "description": "配送エリアテスト: 東京→仙台（東北地方）",
+  "test_id": "AREA-007",
+  "order": {
+    "email": "customer@example.com",
+    "fulfillment_status": "unfulfilled",
+    "send_receipt": false,
+    "send_fulfillment_receipt": false,
+    "note": "テスト注文: 東京→仙台 東北地方",
+    "tags": "test, area, tokyo-sendai, tohoku",
+    "line_items": [
+      {
+        "variant_id": null,
+        "quantity": 1,
+        "title": "テスト商品（東京→仙台）",
+        "price": "2800.00",
+        "grams": 700,
+        "sku": "TEST-AREA-007",
+        "requires_shipping": true
+      }
+    ],
+    "shipping_address": {
+      "first_name": "由美",
+      "last_name": "仙台",
+      "company": null,
+      "address1": "1-1-1 青葉区",
+      "address2": null,
+      "city": "仙台市青葉区",
+      "province": "宮城県",
+      "province_code": "JP-04",
+      "country": "Japan",
+      "country_code": "JP",
+      "zip": "980-0001",
+      "phone": "022-1234-5678"
+    },
+    "shipping_lines": [
+      {
+        "title": "ヤマト運輸 宅急便 60サイズ",
+        "price": "1050.00",
+        "code": "YAMATO_TAKKYUBIN_60",
+        "source": "plusshipping"
+      }
+    ],
+    "financial_status": "pending"
+  },
+  "shipping_metadata": {
+    "carrier": "yamato",
+    "service_type": "YAMATO_SERVICE_TYPE_TAKKYUBIN",
+    "packing_size": 60,
+    "consignor_prefecture": "東京都",
+    "destination_prefecture": "宮城県",
+    "purchase_type": "single",
+    "expected_base_fee": 1050
+  }
+}

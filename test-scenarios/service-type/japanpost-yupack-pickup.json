@@ -1,0 +1,59 @@
+{
+  "description": "便種テスト: 日本郵便 ゆうパック（集荷）",
+  "test_id": "SERVICE-013",
+  "order": {
+    "email": "customer@example.com",
+    "fulfillment_status": "unfulfilled",
+    "send_receipt": false,
+    "send_fulfillment_receipt": false,
+    "note": "テスト注文: 日本郵便 ゆうパック（集荷）",
+    "tags": "test, service-type, japanpost, yupack, pickup",
+    "line_items": [
+      {
+        "variant_id": null,
+        "quantity": 1,
+        "title": "テスト商品（ゆうパック）",
+        "price": "3100.00",
+        "grams": 920,
+        "sku": "TEST-SVC-013",
+        "requires_shipping": true
+      }
+    ],
+    "shipping_address": {
+      "first_name": "雅子",
+      "last_name": "前田",
+      "company": null,
+      "address1": "1-1-1",
+      "address2": "アパート302",
+      "city": "高松市",
+      "province": "香川県",
+      "province_code": "JP-37",
+      "country": "Japan",
+      "country_code": "JP",
+      "zip": "760-0001",
+      "phone": "087-1234-5678"
+    },
+    "shipping_lines": [
+      {
+        "title": "日本郵便 ゆうパック（集荷）60サイズ",
+        "price": "1020.00",
+        "code": "JP_YUPACK_PICKUP_60",
+        "source": "plusshipping"
+      }
+    ],
+    "financial_status": "pending"
+  },
+  "shipping_metadata": {
+    "carrier": "japanpost",
+    "service_type": "JP_PARCEL_SERVICE_CODE_YU_PACK",
+    "service_code": "JP:000",
+    "jp_parcel_service_code": "101",
+    "shipping_type": "JAPAN_POST_SHIPPING_TYPE_PICKUP",
+    "shipping_type_code": "pickup",
+    "packing_size": 60,
+    "consignor_prefecture": "東京都",
+    "destination_prefecture": "香川県",
+    "purchase_type": "single",
+    "note": "ゆうパック集荷サービス"
+  }
+}

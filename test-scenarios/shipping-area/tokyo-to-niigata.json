@@ -1,0 +1,56 @@
+{
+  "description": "配送エリアテスト: 東京→新潟（信越地方）",
+  "test_id": "AREA-017",
+  "order": {
+    "email": "customer@example.com",
+    "fulfillment_status": "unfulfilled",
+    "send_receipt": false,
+    "send_fulfillment_receipt": false,
+    "note": "テスト注文: 東京→新潟 信越地方",
+    "tags": "test, area, tokyo-niigata, shinetsu",
+    "line_items": [
+      {
+        "variant_id": null,
+        "quantity": 1,
+        "title": "テスト商品（東京→新潟）",
+        "price": "2500.00",
+        "grams": 680,
+        "sku": "TEST-AREA-017",
+        "requires_shipping": true
+      }
+    ],
+    "shipping_address": {
+      "first_name": "恵美",
+      "last_name": "新潟",
+      "company": null,
+      "address1": "1-1-1 中央区",
+      "address2": null,
+      "city": "新潟市中央区",
+      "province": "新潟県",
+      "province_code": "JP-15",
+      "country": "Japan",
+      "country_code": "JP",
+      "zip": "950-0001",
+      "phone": "025-1234-5678"
+    },
+    "shipping_lines": [
+      {
+        "title": "日本郵便 ゆうパック 60サイズ",
+        "price": "950.00",
+        "code": "JP_YUPACK_60",
+        "source": "plusshipping"
+      }
+    ],
+    "financial_status": "pending"
+  },
+  "shipping_metadata": {
+    "carrier": "japanpost",
+    "service_type": "JP_PARCEL_SERVICE_CODE_YU_PACK",
+    "service_code": "JP:000",
+    "packing_size": 60,
+    "consignor_prefecture": "東京都",
+    "destination_prefecture": "新潟県",
+    "purchase_type": "single",
+    "expected_base_fee": 950
+  }
+}

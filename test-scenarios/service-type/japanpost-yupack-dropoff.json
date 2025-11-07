@@ -1,0 +1,59 @@
+{
+  "description": "便種テスト: 日本郵便 ゆうパック（持込）",
+  "test_id": "SERVICE-014",
+  "order": {
+    "email": "customer@example.com",
+    "fulfillment_status": "unfulfilled",
+    "send_receipt": false,
+    "send_fulfillment_receipt": false,
+    "note": "テスト注文: 日本郵便 ゆうパック（持込）",
+    "tags": "test, service-type, japanpost, yupack, dropoff, discount",
+    "line_items": [
+      {
+        "variant_id": null,
+        "quantity": 1,
+        "title": "テスト商品（ゆうパック・持込割引）",
+        "price": "2700.00",
+        "grams": 780,
+        "sku": "TEST-SVC-014",
+        "requires_shipping": true
+      }
+    ],
+    "shipping_address": {
+      "first_name": "康平",
+      "last_name": "坂本",
+      "company": null,
+      "address1": "2-2-2",
+      "address2": null,
+      "city": "長野市",
+      "province": "長野県",
+      "province_code": "JP-20",
+      "country": "Japan",
+      "country_code": "JP",
+      "zip": "380-0001",
+      "phone": "026-1234-5678"
+    },
+    "shipping_lines": [
+      {
+        "title": "日本郵便 ゆうパック（持込）60サイズ",
+        "price": "900.00",
+        "code": "JP_YUPACK_DROPOFF_60",
+        "source": "plusshipping"
+      }
+    ],
+    "financial_status": "pending"
+  },
+  "shipping_metadata": {
+    "carrier": "japanpost",
+    "service_type": "JP_PARCEL_SERVICE_CODE_YU_PACK",
+    "service_code": "JP:000",
+    "jp_parcel_service_code": "101",
+    "shipping_type": "JAPAN_POST_SHIPPING_TYPE_DROPOFF",
+    "shipping_type_code": "dropoff",
+    "packing_size": 60,
+    "consignor_prefecture": "東京都",
+    "destination_prefecture": "長野県",
+    "purchase_type": "single",
+    "note": "ゆうパック持込割引適用（集荷より安い）"
+  }
+}

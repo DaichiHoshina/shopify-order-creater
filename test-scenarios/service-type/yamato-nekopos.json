@@ -1,0 +1,58 @@
+{
+  "description": "便種テスト: ヤマト運輸 ネコポス（全国一律料金）",
+  "test_id": "SERVICE-002",
+  "order": {
+    "email": "customer@example.com",
+    "fulfillment_status": "unfulfilled",
+    "send_receipt": false,
+    "send_fulfillment_receipt": false,
+    "note": "テスト注文: ヤマト運輸 ネコポス",
+    "tags": "test, service-type, yamato, nekopos, flat-rate",
+    "line_items": [
+      {
+        "variant_id": null,
+        "quantity": 1,
+        "title": "テスト商品（ネコポス・薄型）",
+        "price": "800.00",
+        "grams": 150,
+        "sku": "TEST-SVC-002",
+        "requires_shipping": true
+      }
+    ],
+    "shipping_address": {
+      "first_name": "花子",
+      "last_name": "佐藤",
+      "company": null,
+      "address1": "2-2-2",
+      "address2": "マンション301",
+      "city": "那覇市",
+      "province": "沖縄県",
+      "province_code": "JP-47",
+      "country": "Japan",
+      "country_code": "JP",
+      "zip": "900-0001",
+      "phone": "098-1234-5678"
+    },
+    "shipping_lines": [
+      {
+        "title": "ヤマト運輸 ネコポス",
+        "price": "175.00",
+        "code": "YAMATO_NEKOPOS",
+        "source": "plusshipping"
+      }
+    ],
+    "financial_status": "pending"
+  },
+  "shipping_metadata": {
+    "carrier": "yamato",
+    "service_type": "YAMATO_SERVICE_TYPE_NEKOPOS",
+    "service_code": "YM:001",
+    "service_type_code": "1",
+    "packing_size": null,
+    "consignor_prefecture": "東京都",
+    "destination_prefecture": "沖縄県",
+    "cool_type": "YAMATO_COOL_TYPE_NONE",
+    "purchase_type": "single",
+    "note": "ネコポスは全国一律料金のため都道府県による料金差なし"
+  }
+}

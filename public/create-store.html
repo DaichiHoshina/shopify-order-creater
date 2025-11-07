@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopify開発ストア作成ガイド & 管理ツール</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      color: white;
+      margin-bottom: 40px;
+    }
+
+    .header h1 {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      font-size: 16px;
+      opacity: 0.9;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+      justify-content: center;
+    }
+
+    .tab {
+      padding: 12px 24px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .tab:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .tab.active {
+      background: white;
+      color: #667eea;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      padding: 40px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    h3 {
+      color: #555;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      font-size: 20px;
+    }
+
+    .guide-section {
+      margin-bottom: 30px;
+    }
+
+    .step {
+      background: #f8f9fa;
+      border-left: 4px solid #667eea;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+
+    .step-number {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      background: #667eea;
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 30px;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .step h4 {
+      display: inline;
+      color: #333;
+      font-size: 18px;
+    }
+
+    .step p {
+      margin-top: 10px;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .step ul {
+      margin-top: 10px;
+      margin-left: 40px;
+      color: #666;
+      line-height: 1.8;
+    }
+
+    .button-primary {
+      display: inline-block;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .button-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="url"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+      font-family: inherit;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    input[type="url"]:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: #888;
+      margin-top: 4px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .button-secondary {
+      padding: 10px 20px;
+      background: #6c757d;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .button-secondary:hover {
+      background: #5a6268;
+    }
+
+    .store-list {
+      margin-top: 30px;
+    }
+
+    .store-item {
+      background: #f8f9fa;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 15px;
+      transition: box-shadow 0.3s;
+    }
+
+    .store-item:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .store-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .store-name {
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .store-url {
+      color: #667eea;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .store-url:hover {
+      text-decoration: underline;
+    }
+
+    .store-meta {
+      display: flex;
+      gap: 15px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      font-size: 13px;
+      color: #666;
+    }
+
+    .meta-label {
+      font-weight: 600;
+      color: #333;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 4px 12px;
+      background: #667eea;
+      color: white;
+      border-radius: 12px;
+      font-size: 12px;
+      margin-right: 5px;
+      margin-top: 5px;
+    }
+
+    .store-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .button-small {
+      padding: 6px 12px;
+      font-size: 13px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: opacity 0.3s;
+    }
+
+    .button-edit {
+      background: #ffc107;
+      color: #333;
+    }
+
+    .button-delete {
+      background: #dc3545;
+      color: white;
+    }
+
+    .button-copy {
+      background: #17a2b8;
+      color: white;
+    }
+
+    .button-small:hover {
+      opacity: 0.8;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #999;
+    }
+
+    .empty-state-icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+    }
+
+    .search-bar {
+      margin-bottom: 20px;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .alert {
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .alert-success {
+      background: #d4edda;
+      border: 1px solid #c3e6cb;
+      color: #155724;
+    }
+
+    .alert-info {
+      background: #d1ecf1;
+      border: 1px solid #bee5eb;
+      color: #0c5460;
+    }
+
+    .alert-warning {
+      background: #fff3cd;
+      border: 1px solid #ffeeba;
+      color: #856404;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🏪 Shopify開発ストア作成ガイド & 管理ツール</h1>
+      <p>開発ストアの作成をサポートし、複数のテスト用ストアを効率的に管理</p>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="guide">📝 作成手順ガイド</button>
+      <button class="tab" data-tab="register">➕ ストア登録</button>
+      <button class="tab" data-tab="manage">📋 ストア管理</button>
+    </div>
+
+    <!-- 作成手順ガイドタブ -->
+    <div class="tab-content active" id="guide-tab">
+      <div class="card">
+        <h2>📝 Shopify開発ストア作成ガイド</h2>
+        
+        <div class="alert alert-info">
+          <strong>⚠️ 重要：</strong> Shopify Partner APIでは開発ストアの自動作成がサポートされていません。Partner Dashboardから手動で作成する必要があります。
+        </div>
+
+        <div class="guide-section">
+          <h3>📋 前提条件</h3>
+          <ul>
+            <li>Shopifyパートナーアカウントを持っていること</li>
+            <li>Partner Dashboardにログインできること</li>
+          </ul>
+          <a href="https://partners.shopify.com" target="_blank" class="button-primary" style="margin-top: 15px;">
+            Partner Dashboardを開く →
+          </a>
+        </div>
+
+        <div class="guide-section">
+          <h3>🚀 作成手順</h3>
+          
+          <div class="step">
+            <span class="step-number">1</span>
+            <h4>Partner Dashboardにアクセス</h4>
+            <p>
+              <a href="https://partners.shopify.com" target="_blank">https://partners.shopify.com</a> にアクセスし、ログインします。
+            </p>
+          </div>
+
+          <div class="step">
+            <span class="step-number">2</span>
+            <h4>「Stores」メニューを選択</h4>
+            <p>
+              左側のナビゲーションメニューから「Stores」をクリックします。
+            </p>
+          </div>
+
+          <div class="step">
+            <span class="step-number">3</span>
+            <h4>「Add store」をクリック</h4>
+            <p>
+              画面右上の「Add store」ボタンをクリックし、「Create development store」を選択します。
+            </p>
+          </div>
+
+          <div class="step">
+            <span class="step-number">4</span>
+            <h4>ストア用途を選択</h4>
+            <p>
+              「Development store use」セクションで、以下のいずれかを選択：
+            </p>
+            <ul>
+              <li><strong>Create a store to test and build</strong> - アプリやテーマのテスト用</li>
+              <li><strong>Create a store for a client</strong> - クライアント向けのストア構築用</li>
+            </ul>
+            <p>テスト用の場合は「Create a store to test and build」を選択してください。</p>
+          </div>
+
+          <div class="step">
+            <span class="step-number">5</span>
+            <h4>ストア名と設定を入力</h4>
+            <p>
+              以下の情報を入力します：
+            </p>
+            <ul>
+              <li><strong>Store name</strong> - ストア名（後から変更不可）</li>
+              <li><strong>Store URL</strong> - myshopify.comのURL（自動生成）</li>
+              <li><strong>Store location</strong> - ストアの所在地（日本の場合は「Japan」）</li>
+              <li><strong>Purpose</strong> - 用途（テスト、学習等）</li>
+            </ul>
+          </div>
+
+          <div class="step">
+            <span class="step-number">6</span>
+            <h4>「Create development store」をクリック</h4>
+            <p>
+              すべての情報を入力したら、「Create development store」ボタンをクリックして作成します。
+            </p>
+          </div>
+
+          <div class="step">
+            <span class="step-number">7</span>
+            <h4>アクセストークンを取得</h4>
+            <p>
+              作成したストアにアクセスし、Admin APIアクセストークンを取得します：
+            </p>
+            <ul>
+              <li>ストアの管理画面にログイン</li>
+              <li>「Settings」→「Apps and sales channels」→「Develop apps」を選択</li>
+              <li>「Create an app」でアプリを作成</li>
+              <li>「Admin API integration」でスコープを設定</li>
+              <li>「Install app」でアクセストークンを取得</li>
+            </ul>
+          </div>
+
+          <div class="step">
+            <span class="step-number">8</span>
+            <h4>このツールにストア情報を登録</h4>
+            <p>
+              作成したストアの情報を「ストア登録」タブから登録して、効率的に管理しましょう！
+            </p>
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <h3>💡 ヒント</h3>
+          <ul>
+            <li>ストア名は用途が分かりやすい名前にすると管理しやすくなります（例：test-campaign-store、test-shipping-store）</li>
+            <li>テストシナリオごとに別々のストアを作成すると、データがクリーンに保てます</li>
+            <li>開発ストアは無料ですが、パートナーアカウントごとに作成数の上限があります</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ストア登録タブ -->
+    <div class="tab-content" id="register-tab">
+      <div class="card">
+        <h2>➕ ストア登録</h2>
+        
+        <div class="alert alert-success" id="success-message" style="display: none;"></div>
+
+        <form id="store-form">
+          <div class="form-group">
+            <label for="store-name">ストア名 *</label>
+            <input type="text" id="store-name" name="storeName" required placeholder="例: campaign-test-store">
+            <div class="hint">管理しやすい名前を付けてください</div>
+          </div>
+
+          <div class="form-group">
+            <label for="store-url">ストアURL *</label>
+            <input type="url" id="store-url" name="storeUrl" required placeholder="https://your-store.myshopify.com">
+            <div class="hint">https://を含むフルURL</div>
+          </div>
+
+          <div class="form-group">
+            <label for="access-token">アクセストークン *</label>
+            <input type="password" id="access-token" name="accessToken" required placeholder="shpat_xxxxxxxxxxxxx">
+            <div class="hint">Admin APIアクセストークン（表示されないため安全です）</div>
+          </div>
+
+          <div class="form-group">
+            <label for="purpose">用途 *</label>
+            <select id="purpose" name="purpose" required>
+              <option value="">-- 選択してください --</option>
+              <option value="campaign">キャンペーンテスト</option>
+              <option value="shipping">配送エリアテスト</option>
+              <option value="service">便種テスト</option>
+              <option value="boundary">境界値テスト</option>
+              <option value="general">一般テスト</option>
+              <option value="other">その他</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="tags">タグ（カンマ区切り）</label>
+            <input type="text" id="tags" name="tags" placeholder="例: yamato, クーポン, 東京">
+            <div class="hint">検索・フィルタリング用のタグ（オプション）</div>
+          </div>
+
+          <div class="form-group">
+            <label for="notes">メモ</label>
+            <textarea id="notes" name="notes" placeholder="このストアに関する補足情報があれば記入してください"></textarea>
+          </div>
+
+          <button type="submit" class="button-primary">ストアを登録</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ストア管理タブ -->
+    <div class="tab-content" id="manage-tab">
+      <div class="card">
+        <h2>📋 ストア管理</h2>
+
+        <div class="stats">
+          <div class="stat-card">
+            <div class="stat-value" id="total-stores">0</div>
+            <div class="stat-label">登録済みストア数</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="total-purposes">0</div>
+            <div class="stat-label">用途カテゴリ数</div>
+          </div>
+        </div>
+
+        <div class="search-bar">
+          <input type="text" id="search-input" placeholder="🔍 ストア名、URL、タグで検索...">
+        </div>
+
+        <div class="button-group">
+          <button class="button-secondary" id="export-btn">📤 データをエクスポート</button>
+          <button class="button-secondary" id="import-btn">📥 データをインポート</button>
+          <input type="file" id="import-file" accept=".json" style="display: none;">
+        </div>
+
+        <div class="store-list" id="store-list">
+          <div class="empty-state">
+            <div class="empty-state-icon">🏪</div>
+            <p>まだストアが登録されていません</p>
+            <p>「ストア登録」タブから新しいストアを追加してください</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // LocalStorage管理
+    const STORAGE_KEY = 'shopify-dev-stores';
+
+    // ストアデータを取得
+    function getStores() {
+      const data = localStorage.getItem(STORAGE_KEY);
+      return data ? JSON.parse(data) : [];
+    }
+
+    // ストアデータを保存
+    function saveStores(stores) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(stores));
+      updateStats();
+      renderStores();
+    }
+
+    // タブ切り替え
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const targetTab = tab.dataset.tab;
+        
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        
+        tab.classList.add('active');
+        document.getElementById(`${targetTab}-tab`).classList.add('active');
+      });
+    });
+
+    // ストア登録フォーム
+    document.getElementById('store-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(e.target);
+      const store = {
+        id: Date.now().toString(),
+        name: formData.get('storeName'),
+        url: formData.get('storeUrl'),
+        accessToken: formData.get('accessToken'),
+        purpose: formData.get('purpose'),
+        tags: formData.get('tags').split(',').map(tag => tag.trim()).filter(tag => tag),
+        notes: formData.get('notes'),
+        createdAt: new Date().toISOString()
+      };
+
+      const stores = getStores();
+      stores.push(store);
+      saveStores(stores);
+
+      // 成功メッセージ
+      const successMsg = document.getElementById('success-message');
+      successMsg.textContent = `✅ ストア「${store.name}」を登録しました！`;
+      successMsg.style.display = 'block';
+      setTimeout(() => {
+        successMsg.style.display = 'none';
+      }, 3000);
+
+      // フォームをリセット
+      e.target.reset();
+
+      // ストア管理タブに切り替え
+      document.querySelector('[data-tab="manage"]').click();
+    });
+
+    // ストア一覧をレンダリング
+    function renderStores(searchQuery = '') {
+      const stores = getStores();
+      const storeList = document.getElementById('store-list');
+      
+      const filteredStores = stores.filter(store => {
+        if (!searchQuery) return true;
+        const query = searchQuery.toLowerCase();
+        return (
+          store.name.toLowerCase().includes(query) ||
+          store.url.toLowerCase().includes(query) ||
+          store.tags.some(tag => tag.toLowerCase().includes(query))
+        );
+      });
+
+      if (filteredStores.length === 0) {
+        storeList.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">🔍</div>
+            <p>ストアが見つかりません</p>
+          </div>
+        `;
+        return;
+      }
+
+      storeList.innerHTML = filteredStores.map(store => `
+        <div class="store-item" data-id="${store.id}">
+          <div class="store-header">
+            <div>
+              <div class="store-name">${store.name}</div>
+              <a href="${store.url}/admin" target="_blank" class="store-url">${store.url}</a>
+            </div>
+          </div>
+          <div class="store-meta">
+            <div class="meta-item">
+              <span class="meta-label">用途:</span> ${getPurposeLabel(store.purpose)}
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">登録日:</span> ${new Date(store.createdAt).toLocaleDateString('ja-JP')}
+            </div>
+          </div>
+          ${store.tags.length > 0 ? `
+            <div style="margin-top: 10px;">
+              ${store.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+            </div>
+          ` : ''}
+          ${store.notes ? `
+            <div style="margin-top: 10px; color: #666; font-size: 14px;">
+              ${store.notes}
+            </div>
+          ` : ''}
+          <div class="store-actions">
+            <button class="button-small button-copy" onclick="copyAccessToken('${store.id}')">🔑 トークンをコピー</button>
+            <button class="button-small button-copy" onclick="copyStoreUrl('${store.id}')">🔗 URLをコピー</button>
+            <button class="button-small button-edit" onclick="editStore('${store.id}')">✏️ 編集</button>
+            <button class="button-small button-delete" onclick="deleteStore('${store.id}')">🗑️ 削除</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // 用途ラベルを取得
+    function getPurposeLabel(purpose) {
+      const labels = {
+        'campaign': 'キャンペーンテスト',
+        'shipping': '配送エリアテスト',
+        'service': '便種テスト',
+        'boundary': '境界値テスト',
+        'general': '一般テスト',
+        'other': 'その他'
+      };
+      return labels[purpose] || purpose;
+    }
+
+    // 統計情報を更新
+    function updateStats() {
+      const stores = getStores();
+      document.getElementById('total-stores').textContent = stores.length;
+      
+      const purposes = new Set(stores.map(s => s.purpose));
+      document.getElementById('total-purposes').textContent = purposes.size;
+    }
+
+    // アクセストークンをコピー
+    function copyAccessToken(storeId) {
+      const stores = getStores();
+      const store = stores.find(s => s.id === storeId);
+      if (store) {
+        navigator.clipboard.writeText(store.accessToken).then(() => {
+          alert('✅ アクセストークンをコピーしました！');
+        });
+      }
+    }
+
+    // ストアURLをコピー
+    function copyStoreUrl(storeId) {
+      const stores = getStores();
+      const store = stores.find(s => s.id === storeId);
+      if (store) {
+        navigator.clipboard.writeText(store.url).then(() => {
+          alert('✅ ストアURLをコピーしました！');
+        });
+      }
+    }
+
+    // ストアを削除
+    function deleteStore(storeId) {
+      const stores = getStores();
+      const store = stores.find(s => s.id === storeId);
+      
+      if (confirm(`本当にストア「${store.name}」を削除しますか？この操作は取り消せません。`)) {
+        const filteredStores = stores.filter(s => s.id !== storeId);
+        saveStores(filteredStores);
+      }
+    }
+
+    // ストアを編集
+    function editStore(storeId) {
+      const stores = getStores();
+      const store = stores.find(s => s.id === storeId);
+      
+      if (store) {
+        // フォームに値を設定
+        document.getElementById('store-name').value = store.name;
+        document.getElementById('store-url').value = store.url;
+        document.getElementById('access-token').value = store.accessToken;
+        document.getElementById('purpose').value = store.purpose;
+        document.getElementById('tags').value = store.tags.join(', ');
+        document.getElementById('notes').value = store.notes || '';
+        
+        // ストアを削除（更新のため）
+        const filteredStores = stores.filter(s => s.id !== storeId);
+        saveStores(filteredStores);
+        
+        // ストア登録タブに切り替え
+        document.querySelector('[data-tab="register"]').click();
+      }
+    }
+
+    // 検索
+    document.getElementById('search-input').addEventListener('input', (e) => {
+      renderStores(e.target.value);
+    });
+
+    // エクスポート
+    document.getElementById('export-btn').addEventListener('click', () => {
+      const stores = getStores();
+      const dataStr = JSON.stringify(stores, null, 2);
+      const blob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `shopify-stores-${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // インポート
+    document.getElementById('import-btn').addEventListener('click', () => {
+      document.getElementById('import-file').click();
+    });
+
+    document.getElementById('import-file').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const importedStores = JSON.parse(event.target.result);
+          if (Array.isArray(importedStores)) {
+            if (confirm(`${importedStores.length}件のストアをインポートしますか？既存データは上書きされます。`)) {
+              saveStores(importedStores);
+              alert('✅ インポートが完了しました！');
+            }
+          }
+        } catch (error) {
+          alert('❌ インポートに失敗しました。JSONファイルの形式を確認してください。');
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    // 初期化
+    updateStats();
+    renderStores();
+  </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+{
+  "description": "TC-CALC-005: 一括購入：クーポンが適用されない",
+  "test_id": "TC-CALC-005",
+  "order": {
+    "email": "customer@example.com",
+    "fulfillment_status": "unfulfilled",
+    "send_receipt": false,
+    "send_fulfillment_receipt": false,
+    "note": "テスト注文: 一括購入・クーポン非適用テスト",
+    "tags": "test, campaign, coupon-not-applied, bulk-purchase, yamato",
+    "line_items": [
+      {
+        "variant_id": null,
+        "quantity": 1,
+        "title": "テスト商品C-1",
+        "price": "1500.00",
+        "grams": 600,
+        "sku": "TEST-SKU-003",
+        "requires_shipping": true
+      },
+      {
+        "variant_id": null,
+        "quantity": 1,
+        "title": "テスト商品C-2",
+        "price": "2500.00",
+        "grams": 900,
+        "sku": "TEST-SKU-004",
+        "requires_shipping": true
+      },
+      {
+        "variant_id": null,
+        "quantity": 1,
+        "title": "テスト商品C-3",
+        "price": "3000.00",
+        "grams": 1200,
+        "sku": "TEST-SKU-005",
+        "requires_shipping": true
+      }
+    ],
+    "shipping_address": {
+      "first_name": "次郎",
+      "last_name": "鈴木",
+      "company": "テスト株式会社",
+      "address1": "3-3-3",
+      "address2": "テストビル5F",
+      "city": "名古屋市中区",
+      "province": "愛知県",
+      "province_code": "JP-23",
+      "country": "Japan",
+      "country_code": "JP",
+      "zip": "460-0001",
+      "phone": "052-1234-5678"
+    },
+    "shipping_lines": [
+      {
+        "title": "ヤマト運輸 宅急便 80サイズ",
+        "price": "650.00",
+        "code": "YAMATO_TAKKYUBIN_80",
+        "source": "plusshipping"
+      }
+    ],
+    "financial_status": "pending"
+  },
+  "shipping_metadata": {
+    "carrier": "yamato",
+    "service_type": "YAMATO_SERVICE_TYPE_TAKKYUBIN",
+    "service_code": "YM:000",
+    "packing_size": 80,
+    "consignor_prefecture": "東京都",
+    "destination_prefecture": "愛知県",
+    "purchase_type": "bulk",
+    "campaign_id": null,
+    "expected_fee": 650,
+    "base_fee": 550,
+    "option_fee": 100
+  },
+  "test_expectations": {
+    "coupon_applied": false,
+    "total_shipping_fee": 650,
+    "campaign_id": null,
+    "remaining_count_unchanged": true,
+    "reason": "bulk purchase - campaigns not applicable"
+  }
+}

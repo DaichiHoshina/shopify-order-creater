@@ -1,0 +1,90 @@
+{
+  "description": "TC-BOUNDARY-003/004: キャンペーン終了日時境界テスト",
+  "test_id": "BOUNDARY-003",
+  "order": {
+    "email": "customer@example.com",
+    "fulfillment_status": "unfulfilled",
+    "send_receipt": false,
+    "send_fulfillment_receipt": false,
+    "note": "テスト注文: キャンペーン終了日時境界テスト",
+    "tags": "test, boundary, campaign-end, datetime-edge",
+    "line_items": [
+      {
+        "variant_id": null,
+        "quantity": 1,
+        "title": "テスト商品（終了境界テスト）",
+        "price": "3100.00",
+        "grams": 880,
+        "sku": "TEST-BOUNDARY-003",
+        "requires_shipping": true
+      }
+    ],
+    "shipping_address": {
+      "first_name": "次郎",
+      "last_name": "終了",
+      "company": null,
+      "address1": "3-3-3",
+      "address2": null,
+      "city": "名古屋市中区",
+      "province": "愛知県",
+      "province_code": "JP-23",
+      "country": "Japan",
+      "country_code": "JP",
+      "zip": "460-0001",
+      "phone": "052-1234-5678"
+    },
+    "shipping_lines": [
+      {
+        "title": "佐川急便 飛脚宅配便 60サイズ",
+        "price": "950.00",
+        "code": "SAGAWA_LAND_60",
+        "source": "plusshipping"
+      }
+    ],
+    "financial_status": "pending"
+  },
+  "shipping_metadata": {
+    "carrier": "sagawa",
+    "service_type": "SAGAWA_ITEM_CODE_LAND",
+    "service_code": "SG:000",
+    "packing_size": 60,
+    "consignor_prefecture": "東京都",
+    "destination_prefecture": "愛知県",
+    "purchase_type": "single",
+    "campaign_id": 6
+  },
+  "test_scenarios": {
+    "scenario_1": {
+      "description": "終了日時の1秒前",
+      "system_time": "2025-12-31 23:59:59",
+      "campaign_end_at": "2025-12-31 23:59:59",
+      "expected_coupon_applied": true,
+      "expected_fee": 1,
+      "reason": "キャンペーン終了時刻ぴったり（まだ期間内）で適用可"
+    },
+    "scenario_2": {
+      "description": "終了日時ちょうど（次の秒）",
+      "system_time": "2026-01-01 00:00:00",
+      "campaign_end_at": "2025-12-31 23:59:59",
+      "expected_coupon_applied": false,
+      "expected_fee": 950,
+      "reason": "キャンペーン終了後のため適用不可"
+    },
+    "scenario_3": {
+      "description": "終了日時の1時間後",
+      "system_time": "2026-01-01 01:00:00",
+      "campaign_end_at": "2025-12-31 23:59:59",
+      "expected_coupon_applied": false,
+      "expected_fee": 950,
+      "reason": "キャンペーン終了後のため適用不可"
+    }
+  },
+  "test_procedure": [
+    "1. キャンペーンのend_atを設定",
+    "2. システム時刻を調整（または送料計算APIに日時パラメータ追加）",
+    "3. 各シナリオで送料計算APIを実行",
+    "4. クーポン適用可否を確認",
+    "5. 特にend_at境界での挙動（<= なのか < なのか）を確認"
+  ],
+  "note": "終了日時の境界条件は実装によって異なる可能性があるため注意。通常は end_at <= current_time で期間外判定"
+}

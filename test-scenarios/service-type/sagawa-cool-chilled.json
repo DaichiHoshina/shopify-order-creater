@@ -1,0 +1,64 @@
+{
+  "description": "便種テスト: 佐川急便 飛脚クール便（冷蔵）",
+  "test_id": "SERVICE-011",
+  "order": {
+    "email": "customer@example.com",
+    "fulfillment_status": "unfulfilled",
+    "send_receipt": false,
+    "send_fulfillment_receipt": false,
+    "note": "テスト注文: 佐川急便 飛脚クール便（冷蔵）",
+    "tags": "test, service-type, sagawa, cool, chilled, refrigerated",
+    "line_items": [
+      {
+        "variant_id": null,
+        "quantity": 1,
+        "title": "テスト商品（要冷蔵・生鮮食品）",
+        "price": "4500.00",
+        "grams": 1300,
+        "sku": "TEST-SVC-011",
+        "requires_shipping": true,
+        "properties": [
+          {
+            "name": "保存方法",
+            "value": "要冷蔵（10℃以下）"
+          }
+        ]
+      }
+    ],
+    "shipping_address": {
+      "first_name": "麻衣",
+      "last_name": "山本",
+      "company": null,
+      "address1": "4-4-4",
+      "address2": "マンション201",
+      "city": "新潟市中央区",
+      "province": "新潟県",
+      "province_code": "JP-15",
+      "country": "Japan",
+      "country_code": "JP",
+      "zip": "950-0001",
+      "phone": "025-1234-5678"
+    },
+    "shipping_lines": [
+      {
+        "title": "佐川急便 飛脚クール便（冷蔵）60サイズ",
+        "price": "1320.00",
+        "code": "SAGAWA_COOL_CHILLED_60",
+        "source": "plusshipping"
+      }
+    ],
+    "financial_status": "pending"
+  },
+  "shipping_metadata": {
+    "carrier": "sagawa",
+    "service_type": "SAGAWA_ITEM_CODE_COOL_CHILLED",
+    "service_code": "SG:COOL_CHILLED",
+    "binsyu_code": "COOL",
+    "packing_size": 60,
+    "consignor_prefecture": "東京都",
+    "destination_prefecture": "新潟県",
+    "cool_type": "chilled",
+    "purchase_type": "single",
+    "note": "佐川急便の冷蔵クール便"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "description": "便種テスト: ヤマト運輸 DM便（全国一律料金）",
+  "test_id": "SERVICE-003",
+  "order": {
+    "email": "customer@example.com",
+    "fulfillment_status": "unfulfilled",
+    "send_receipt": false,
+    "send_fulfillment_receipt": false,
+    "note": "テスト注文: ヤマト運輸 DM便",
+    "tags": "test, service-type, yamato, dm-bin, flat-rate",
+    "line_items": [
+      {
+        "variant_id": null,
+        "quantity": 1,
+        "title": "テスト商品（DM便・カタログ）",
+        "price": "500.00",
+        "grams": 100,
+        "sku": "TEST-SVC-003",
+        "requires_shipping": true
+      }
+    ],
+    "shipping_address": {
+      "first_name": "次郎",
+      "last_name": "鈴木",
+      "company": null,
+      "address1": "3-3-3",
+      "address2": null,
+      "city": "札幌市中央区",
+      "province": "北海道",
+      "province_code": "JP-01",
+      "country": "Japan",
+      "country_code": "JP",
+      "zip": "060-0001",
+      "phone": "011-1234-5678"
+    },
+    "shipping_lines": [
+      {
+        "title": "ヤマト運輸 DM便",
+        "price": "164.00",
+        "code": "YAMATO_DM",
+        "source": "plusshipping"
+      }
+    ],
+    "financial_status": "pending"
+  },
+  "shipping_metadata": {
+    "carrier": "yamato",
+    "service_type": "YAMATO_SERVICE_TYPE_DM",
+    "service_code": "YM:002",
+    "service_type_code": "2",
+    "packing_size": null,
+    "consignor_prefecture": "東京都",
+    "destination_prefecture": "北海道",
+    "cool_type": "YAMATO_COOL_TYPE_NONE",
+    "purchase_type": "single",
+    "note": "DM便は全国一律料金"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "name": "shopify-order-creator",
+  "version": "1.0.0",
+  "description": "CLI tool to create Shopify orders from DynamoDB session data",
+  "main": "dist/index.js",
+  "bin": {
+    "shopify-order-creator": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "web": "npm run build && node dist/server.js",
+    "dev:web": "ts-node src/server.ts"
+  },
+  "keywords": [
+    "shopify",
+    "dynamodb",
+    "cli",
+    "order"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.705.0",
+    "@aws-sdk/util-dynamodb": "^3.705.0",
+    "axios": "^1.7.9",
+    "commander": "^12.1.0",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.5",
+    "@types/node": "^22.10.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  }
+}
