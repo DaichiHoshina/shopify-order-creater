@@ -240,6 +240,133 @@ npm start create -- --show-default-order
 npm start create-custom -- --file custom-order.json
 ```
 
+## 🌐 Web UI
+
+環境変数を設定せずに、ブラウザから直接注文を作成できるWebインターフェースも提供しています。
+
+### サーバー起動方法
+
+```bash
+npm run web
+```
+
+または開発モード（ts-nodeで実行）：
+
+```bash
+npm run dev:web
+```
+
+サーバーが起動したら、ブラウザで以下にアクセスします：
+
+```
+http://localhost:3000
+```
+
+デフォルトポートは3000ですが、環境変数で変更可能です：
+
+```bash
+PORT=8080 npm run web
+```
+
+### 機能
+
+#### 1. デフォルト注文作成
+
+最もシンプルな使い方：
+
+1. **Shopify Store URL** を入力（例: `https://your-store.myshopify.com`）
+2. **Shopify Access Token** を入力（Shopify管理画面から取得）
+3. 「**デフォルト注文**」を選択
+4. 「**注文を作成する**」ボタンをクリック
+
+デフォルト注文データ（EUR通貨、靴の注文、日本の配送先）が自動的に使用されます。
+
+#### 2. テンプレート選択
+
+事前に用意されたテンプレートから選択：
+
+1. Store URLとAccess Tokenを入力
+2. 「**カスタム注文 (JSON)**」を選択
+3. **テンプレート選択** ドロップダウンから目的のテンプレートを選択
+   - 📦 基本テンプレート
+     - デフォルト注文（EUR通貨）
+     - 日本国内配送（JPY通貨、消費税10%）
+     - 複数商品注文（3商品）
+     - 高額商品（10万円以上）
+   - 🗾 配送エリアテスト
+     - 北海道、東京、大阪、沖縄など主要都市間
+   - 📏 梱包サイズテスト
+     - 60cm、80cm、100cm、120cm
+4. JSONが自動入力されるので、必要に応じて編集
+5. 「注文を作成する」ボタンをクリック
+
+#### 3. カスタム注文作成（JSON直接入力）
+
+完全にカスタマイズした注文データを作成：
+
+1. Store URLとAccess Tokenを入力
+2. 「カスタム注文 (JSON)」を選択
+3. **注文データ (JSON)** テキストエリアに、Shopify Order Creation Input形式のJSONを入力
+4. 「注文を作成する」ボタンをクリック
+
+JSON形式例：
+
+```json
+{
+  "currency": "JPY",
+  "lineItems": [
+    {
+      "title": "商品名",
+      "priceSet": {
+        "shopMoney": {
+          "amount": 5000,
+          "currencyCode": "JPY"
+        }
+      },
+      "quantity": 2
+    }
+  ],
+  "shippingAddress": {
+    "firstName": "太郎",
+    "lastName": "山田",
+    "address1": "1-1-1",
+    "city": "渋谷区",
+    "province": "東京都",
+    "country": "JP",
+    "zip": "150-0001",
+    "phone": "+819012345678"
+  },
+  "transactions": [
+    {
+      "kind": "SALE",
+      "status": "SUCCESS",
+      "amountSet": {
+        "shopMoney": {
+          "amount": 10000,
+          "currencyCode": "JPY"
+        }
+      }
+    }
+  ]
+}
+```
+
+### Web UIの利点
+
+- ✅ 環境変数の設定が不要
+- ✅ 複数のストアを簡単に切り替え可能
+- ✅ テンプレートから素早く選択
+- ✅ JSONをブラウザで直接編集・確認
+- ✅ リアルタイムエラー表示
+- ✅ DynamoDBアクセス不要（Access Tokenを直接入力）
+
+### セキュリティ注意事項
+
+- Access Tokenはブラウザに保存されません（送信のみ）
+- ローカル環境での使用を推奨
+- 本番環境のAccess Tokenは使用しないでください
+- HTTPS環境での使用を推奨（本番デプロイ時）
+
 ## 🛠️ トラブルシューティング
 
 ### エラー: "No sessions found"
