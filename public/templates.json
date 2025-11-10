@@ -116,6 +116,26 @@
         {"id": "campaign-start-edge", "name": "キャンペーン開始直後", "description": "開始時刻の境界値", "icon": "🕐", "file": "test-scenarios/boundary/campaign-start-edge.json"},
         {"id": "campaign-end-edge", "name": "キャンペーン終了直前", "description": "終了時刻の境界値", "icon": "🕛", "file": "test-scenarios/boundary/campaign-end-edge.json"}
       ]
+    },
+    {
+      "id": "consignor-area",
+      "name": "発送元エリア（13種網羅）",
+      "icon": "📮",
+      "templates": [
+        {"id": "hokkaido-origin", "name": "北海道発", "description": "北海道→東京", "icon": "❄️", "file": "test-scenarios/consignor-area/hokkaido-to-tokyo.json"},
+        {"id": "kita-tohoku-origin", "name": "北東北発", "description": "青森→東京", "icon": "🍎", "file": "test-scenarios/consignor-area/kita-tohoku-to-tokyo.json"},
+        {"id": "minami-tohoku-origin", "name": "南東北発", "description": "宮城→東京", "icon": "🌾", "file": "test-scenarios/consignor-area/minami-tohoku-to-tokyo.json"},
+        {"id": "kanto-origin", "name": "関東発", "description": "神奈川→東京", "icon": "🏙️", "file": "test-scenarios/consignor-area/kanto-to-tokyo.json"},
+        {"id": "shinetsu-origin", "name": "信越発", "description": "新潟→東京", "icon": "🍚", "file": "test-scenarios/consignor-area/shinetsu-to-tokyo.json"},
+        {"id": "hokuriku-origin", "name": "北陸発", "description": "石川→東京", "icon": "🦀", "file": "test-scenarios/consignor-area/hokuriku-to-tokyo.json"},
+        {"id": "chubu-origin", "name": "中部発", "description": "愛知→東京", "icon": "🏯", "file": "test-scenarios/consignor-area/chubu-to-tokyo.json"},
+        {"id": "kansai-origin", "name": "関西発", "description": "大阪→東京", "icon": "🎎", "file": "test-scenarios/consignor-area/kansai-to-tokyo.json"},
+        {"id": "chugoku-origin", "name": "中国発", "description": "広島→東京", "icon": "🦪", "file": "test-scenarios/consignor-area/chugoku-to-tokyo.json"},
+        {"id": "shikoku-origin", "name": "四国発", "description": "香川→東京", "icon": "🍜", "file": "test-scenarios/consignor-area/shikoku-to-tokyo.json"},
+        {"id": "kyushu-origin", "name": "九州発", "description": "福岡→東京", "icon": "🍜", "file": "test-scenarios/consignor-area/kyushu-to-tokyo.json"},
+        {"id": "okinawa-origin", "name": "沖縄発", "description": "沖縄→東京", "icon": "🌴", "file": "test-scenarios/consignor-area/okinawa-to-tokyo.json"},
+        {"id": "remote-island-origin", "name": "離島発", "description": "小笠原諸島→東京", "icon": "🏝️", "file": "test-scenarios/consignor-area/remote-island-to-tokyo.json"}
+      ]
     }
   ]
 }

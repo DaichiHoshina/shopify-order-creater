@@ -1,0 +1,58 @@
+{
+  "description": "発送元エリアテスト: 北海道→東京",
+  "test_id": "CONSIGNOR-001",
+  "order": {
+    "email": "customer@example.com",
+    "fulfillment_status": "unfulfilled",
+    "send_receipt": false,
+    "send_fulfillment_receipt": false,
+    "note": "テスト注文: 北海道発送→東京配送",
+    "tags": "test, consignor-area, hokkaido, area-01",
+    "line_items": [
+      {
+        "variant_id": null,
+        "quantity": 1,
+        "title": "テスト商品（北海道発送）",
+        "price": "3000.00",
+        "grams": 800,
+        "sku": "TEST-CONSIGNOR-001",
+        "requires_shipping": true
+      }
+    ],
+    "shipping_address": {
+      "first_name": "太郎",
+      "last_name": "東京",
+      "company": null,
+      "address1": "1-1-1 千代田",
+      "address2": null,
+      "city": "千代田区",
+      "province": "東京都",
+      "province_code": "JP-13",
+      "country": "Japan",
+      "country_code": "JP",
+      "zip": "100-0001",
+      "phone": "03-1234-5678"
+    },
+    "shipping_lines": [
+      {
+        "title": "ヤマト運輸 宅急便 60サイズ",
+        "price": "1300.00",
+        "code": "YAMATO_TAKKYUBIN_60",
+        "source": "plusshipping"
+      }
+    ],
+    "financial_status": "pending"
+  },
+  "shipping_metadata": {
+    "carrier": "yamato",
+    "service_type": "YAMATO_SERVICE_TYPE_TAKKYUBIN",
+    "packing_size": 60,
+    "consignor_prefecture": "北海道",
+    "consignor_city": "札幌市中央区",
+    "destination_prefecture": "東京都",
+    "purchase_type": "single",
+    "expected_base_fee": 1300,
+    "area_classification": "北海道エリア",
+    "area_code": "01"
+  }
+}
