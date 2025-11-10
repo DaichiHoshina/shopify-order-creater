@@ -2,17 +2,13 @@ name: CI
 
 on:
   push:
-    branches:
-      - main
-      - develop
+    branches: [main, develop]
   pull_request:
-    branches:
-      - main
-      - develop
+    branches: [main, develop]
 
 jobs:
-  build:
-    name: Build and Test
+  ci:
+    name: Lint, Format, and Test
     runs-on: ubuntu-latest
 
     strategy:
@@ -27,30 +23,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          cache: npm
 
       - name: Install dependencies
         run: npm ci
 
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Check code formatting
+        run: npm run format:check
+
+      - name: Run tests
+        run: npm test -- --coverage
+
       - name: Build TypeScript
         run: npm run build
-
-      - name: Check build output
-        run: |
-          if [ ! -f "dist/index.js" ]; then
-            echo "Build failed: dist/index.js not found"
-            exit 1
-          fi
-          echo "Build successful!"
-
-      # テストスクリプトがある場合は実行
-      # - name: Run tests
-      #   run: npm test
-
-      - name: Upload build artifacts
-        if: matrix.node-version == '20.x'
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: dist/
-          retention-days: 7

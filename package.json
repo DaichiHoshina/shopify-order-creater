@@ -12,6 +12,11 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
+    "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "lint:fix": "eslint 'src/**/*.{ts,tsx}' --fix",
+    "format": "prettier --write 'src/**/*.{ts,tsx}'",
+    "format:check": "prettier --check 'src/**/*.{ts,tsx}'",
+    "ci": "npm run lint && npm run format:check && npm run test",
     "bulk-orders": "npm run build && node dist/create-bulk-orders-v2.js",
     "dev:bulk-orders": "ts-node src/create-bulk-orders-v2.ts",
     "create-locations": "npm run build && node dist/create-locations.js",
@@ -38,13 +43,21 @@
     "ora": "^9.0.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.1",
     "@types/inquirer": "^9.0.9",
     "@types/jest": "^30.0.0",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^22.10.2",
+    "@typescript-eslint/eslint-plugin": "^8.46.3",
+    "@typescript-eslint/parser": "^8.46.3",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
     "jest": "^30.2.0",
+    "prettier": "^3.6.2",
     "ts-jest": "^29.4.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.46.3"
   }
 }
