@@ -121,6 +121,14 @@ function extractOrderData(templateData: any): Partial<OrderCreateInput> {
 
 // ミドルウェア
 app.use(express.json());
+
+/**
+ * ルートパスリダイレクト
+ */
+app.get('/', (req: Request, res: Response) => {
+  res.redirect('/home.html');
+});
+
 app.use(express.static(path.join(__dirname, '../public')));
 
 /**
