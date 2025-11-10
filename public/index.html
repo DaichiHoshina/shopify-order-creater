@@ -240,15 +240,23 @@
 
     <form id="orderForm">
       <div class="form-group">
-        <label for="storeUrl">Shopify Store URL *</label>
+        <label for="storeSelect">登録済みストア選択</label>
+        <select id="storeSelect" name="storeSelect">
+          <option value="">-- ストアを選択してください（または手動入力） --</option>
+        </select>
+        <div class="hint">ストア管理ツールで登録したストアを選択できます</div>
+      </div>
+
+      <div class="form-group">
+        <label for="storeName">ストア名 *</label>
         <input
           type="text"
-          id="storeUrl"
-          name="storeUrl"
-          placeholder="https://your-store.myshopify.com"
+          id="storeName"
+          name="storeName"
+          placeholder="your-store-name"
           required
         >
-        <div class="hint">例: https://daichi-hoshina-dev-store.myshopify.com</div>
+        <div class="hint">例: daichi-hoshina-dev-store（.myshopify.comは自動的に付与されます）</div>
       </div>
 
       <div class="form-group">
@@ -317,6 +325,50 @@
     const customOrderRadio = document.getElementById('customOrder');
     const templateSelect = document.getElementById('templateSelect');
     const orderJsonTextarea = document.getElementById('orderJson');
+    const storeSelect = document.getElementById('storeSelect');
+    const storeNameInput = document.getElementById('storeName');
+    const accessTokenInput = document.getElementById('accessToken');
+
+    // LocalStorageからストア情報を取得
+    const STORAGE_KEY = 'shopify-dev-stores';
+
+    function getStores() {
+      const data = localStorage.getItem(STORAGE_KEY);
+      return data ? JSON.parse(data) : [];
+    }
+
+    // 登録済みストアを読み込み
+    function loadStores() {
+      const stores = getStores();
+
+      stores.forEach(store => {
+        const option = document.createElement('option');
+        option.value = store.id;
+        option.textContent = `${store.name} - ${store.url}`;
+        option.dataset.storeName = extractStoreName(store.url);
+        option.dataset.accessToken = store.accessToken;
+        storeSelect.appendChild(option);
+      });
+    }
+
+    // URLからストア名を抽出（https://store-name.myshopify.com → store-name）
+    function extractStoreName(url) {
+      try {
+        const match = url.match(/https?:\/\/([^.]+)\.myshopify\.com/);
+        return match ? match[1] : '';
+      } catch (error) {
+        return '';
+      }
+    }
+
+    // ストア選択時の処理
+    storeSelect.addEventListener('change', (e) => {
+      const selectedOption = e.target.options[e.target.selectedIndex];
+      if (selectedOption.value) {
+        storeNameInput.value = selectedOption.dataset.storeName || '';
+        accessTokenInput.value = selectedOption.dataset.accessToken || '';
+      }
+    });
 
     // テンプレート一覧を読み込み（カテゴリ対応）
     async function loadTemplates() {
@@ -371,22 +423,26 @@
       customOrderJsonTextarea.classList.add('active');
     });
 
-    // ページ読み込み時にテンプレートを取得
+    // ページ読み込み時にテンプレートとストアを取得
     loadTemplates();
+    loadStores();
 
     // フォーム送信
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
       const formData = new FormData(form);
-      const storeUrl = formData.get('storeUrl');
+      const storeName = formData.get('storeName');
       const accessToken = formData.get('accessToken');
       const orderType = formData.get('orderType');
       const orderJson = formData.get('orderJson');
 
+      // ストア名からURLを生成
+      const storeUrl = `https://${storeName}.myshopify.com`;
+
       // バリデーション
-      if (!storeUrl || !accessToken) {
-        showResult('error', 'エラー', 'Store URLとAccess Tokenは必須です');
+      if (!storeName || !accessToken) {
+        showResult('error', 'エラー', 'ストア名とAccess Tokenは必須です');
         return;
       }
 
