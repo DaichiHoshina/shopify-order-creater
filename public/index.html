@@ -685,7 +685,7 @@
 
       // ストア名からURLを生成
       const storeUrl = `https://${storeName}.myshopify.com`;
-      const apiUrl = `https://${storeName}.myshopify.com/admin/api/2025-04/graphql.json`;
+      const apiUrl = '/api/create-order';
 
       // バリデーション
       if (!storeName || !accessToken) {
@@ -723,40 +723,34 @@
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-Shopify-Access-Token': accessToken,
           },
           body: JSON.stringify({
-            query: ORDER_CREATE_MUTATION,
-            variables: {
-              order: orderData,
-            },
+            storeUrl,
+            accessToken,
+            orderType,
+            orderData,
           }),
         });
 
         const data = await response.json();
 
-        // エラーチェック
-        if (data.data && data.data.orderCreate) {
-          if (data.data.orderCreate.userErrors.length > 0) {
-            const errors = data.data.orderCreate.userErrors.map(e => `${e.message} (${e.field.join('.')})`).join('<br>');
-            showResult('error', '❌ バリデーションエラー', `<p>${errors}</p>`);
-          } else {
-            const order = data.data.orderCreate.order;
-            showResult('success', '✅ 注文作成成功！',
-              `<p><strong>Order ID:</strong> ${order.id}</p>
-               <p><strong>Phone:</strong> ${order.phone}</p>
-               <p><strong>Total Tax:</strong> ${order.totalTaxSet.shopMoney.amount} ${order.totalTaxSet.shopMoney.currencyCode}</p>
-               <p><strong>Line Items:</strong> ${order.lineItems.nodes.length}</p>`
-            );
-          }
+        // サーバーサイドAPIのレスポンス処理
+        if (response.ok && data.success) {
+          showResult('success', '✅ 注文作成成功！',
+            `<p><strong>Order ID:</strong> ${data.orderId}</p>
+             <p><strong>Phone:</strong> ${data.phone}</p>
+             <p><strong>Total Tax:</strong> ${data.totalTax}</p>
+             <p><strong>Line Items:</strong> ${data.lineItemsCount}</p>`
+          );
         } else {
           showResult('error', '❌ APIエラー',
-            `<pre>${JSON.stringify(data, null, 2)}</pre>`
+            `<p>${data.error || 'Unknown error'}</p>
+             ${data.details ? `<p>詳細: ${data.details}</p>` : ''}`
           );
         }
       } catch (error) {
         showResult('error', '❌ ネットワークエラー',
-          `<p>Shopify APIとの通信に失敗しました: ${error.message}</p>`
+          `<p>サーバーとの通信に失敗しました: ${error.message}</p>`
         );
       } finally {
         loading.classList.remove('active');

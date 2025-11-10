@@ -8,7 +8,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "node dist/index.js",
+    "vercel-build": "tsc",
+    "start": "node dist/server.js",
     "dev": "ts-node src/index.ts",
     "web": "npm run build && node dist/server.js",
     "dev:web": "ts-node src/server.ts"
@@ -27,7 +28,8 @@
     "axios": "^1.7.9",
     "commander": "^12.1.0",
     "dotenv": "^16.4.7",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "mysql2": "^3.15.3"
   },
   "devDependencies": {
     "@types/express": "^5.0.5",
