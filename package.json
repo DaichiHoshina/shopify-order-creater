@@ -9,6 +9,9 @@
   "scripts": {
     "cli": "ts-node src/cli/index.ts",
     "build": "tsc",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "bulk-orders": "npm run build && node dist/create-bulk-orders-v2.js",
     "dev:bulk-orders": "ts-node src/create-bulk-orders-v2.ts",
     "create-locations": "npm run build && node dist/create-locations.js",
@@ -36,8 +39,11 @@
   },
   "devDependencies": {
     "@types/inquirer": "^9.0.9",
+    "@types/jest": "^30.0.0",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^22.10.2",
+    "jest": "^30.2.0",
+    "ts-jest": "^29.4.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
   }
