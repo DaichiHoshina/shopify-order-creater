@@ -1,0 +1,87 @@
+{
+  "description": "TC-BOUNDARY-002: キャンペーン開始日時境界テスト",
+  "test_id": "BOUNDARY-002",
+  "order": {
+    "email": "customer@example.com",
+    "fulfillment_status": "unfulfilled",
+    "send_receipt": false,
+    "send_fulfillment_receipt": false,
+    "note": "テスト注文: キャンペーン開始日時境界テスト",
+    "tags": "test, boundary, campaign-start, datetime-edge",
+    "line_items": [
+      {
+        "variant_id": null,
+        "quantity": 1,
+        "title": "テスト商品（開始境界テスト）",
+        "price": "2800.00",
+        "grams": 820,
+        "sku": "TEST-BOUNDARY-002",
+        "requires_shipping": true
+      }
+    ],
+    "shipping_address": {
+      "first_name": "花子",
+      "last_name": "開始",
+      "company": null,
+      "address1": "2-2-2",
+      "address2": "マンション301",
+      "city": "大阪市北区",
+      "province": "大阪府",
+      "province_code": "JP-27",
+      "country": "Japan",
+      "country_code": "JP",
+      "zip": "530-0001",
+      "phone": "06-1234-5678"
+    },
+    "shipping_lines": [
+      {
+        "title": "ヤマト運輸 宅急便 60サイズ",
+        "price": "900.00",
+        "code": "YAMATO_TAKKYUBIN_60",
+        "source": "plusshipping"
+      }
+    ],
+    "financial_status": "pending"
+  },
+  "shipping_metadata": {
+    "carrier": "yamato",
+    "service_type": "YAMATO_SERVICE_TYPE_TAKKYUBIN",
+    "packing_size": 60,
+    "consignor_prefecture": "東京都",
+    "destination_prefecture": "大阪府",
+    "purchase_type": "single",
+    "campaign_id": 6
+  },
+  "test_scenarios": {
+    "scenario_1": {
+      "description": "開始日時の1秒前",
+      "system_time": "2025-10-31 23:59:59",
+      "campaign_start_at": "2025-11-01 00:00:00",
+      "expected_coupon_applied": false,
+      "expected_fee": 900,
+      "reason": "キャンペーン開始前のため適用不可"
+    },
+    "scenario_2": {
+      "description": "開始日時ちょうど",
+      "system_time": "2025-11-01 00:00:00",
+      "campaign_start_at": "2025-11-01 00:00:00",
+      "expected_coupon_applied": true,
+      "expected_fee": 1,
+      "reason": "キャンペーン開始時刻ぴったりで適用可"
+    },
+    "scenario_3": {
+      "description": "開始日時の1秒後",
+      "system_time": "2025-11-01 00:00:01",
+      "campaign_start_at": "2025-11-01 00:00:00",
+      "expected_coupon_applied": true,
+      "expected_fee": 1,
+      "reason": "キャンペーン期間内で適用可"
+    }
+  },
+  "test_procedure": [
+    "1. キャンペーンのstart_atを設定",
+    "2. システム時刻を調整（または送料計算APIに日時パラメータ追加）",
+    "3. 各シナリオで送料計算APIを実行",
+    "4. クーポン適用可否を確認"
+  ]
+}

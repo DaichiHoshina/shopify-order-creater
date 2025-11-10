@@ -1,0 +1,50 @@
+{
+  "currency": "JPY",
+  "lineItems": [
+    {
+      "title": "カスタム商品",
+      "priceSet": {
+        "shopMoney": {
+          "amount": 10000,
+          "currencyCode": "JPY"
+        }
+      },
+      "quantity": 1,
+      "taxLines": [
+        {
+          "priceSet": {
+            "shopMoney": {
+              "amount": 1000,
+              "currencyCode": "JPY"
+            }
+          },
+          "rate": 0.1,
+          "title": "消費税"
+        }
+      ]
+    }
+  ],
+  "shippingAddress": {
+    "firstName": "花子",
+    "lastName": "佐藤",
+    "address1": "2-2-2",
+    "city": "渋谷区",
+    "province": "東京都",
+    "country": "JP",
+    "zip": "150-0001",
+    "phone": "+8190-1234-5678"
+  },
+  "phone": "+81 90 1234 5678",
+  "transactions": [
+    {
+      "kind": "SALE",
+      "status": "SUCCESS",
+      "amountSet": {
+        "shopMoney": {
+          "amount": 11000,
+          "currencyCode": "JPY"
+        }
+      }
+    }
+  ]
+}

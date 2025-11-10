@@ -1,0 +1,58 @@
+{
+  "description": "便種テスト: ヤマト運輸 クロネコゆうパケット（全国一律料金）",
+  "test_id": "SERVICE-004",
+  "order": {
+    "email": "customer@example.com",
+    "fulfillment_status": "unfulfilled",
+    "send_receipt": false,
+    "send_fulfillment_receipt": false,
+    "note": "テスト注文: ヤマト運輸 クロネコゆうパケット",
+    "tags": "test, service-type, yamato, yu-packet, flat-rate",
+    "line_items": [
+      {
+        "variant_id": null,
+        "quantity": 1,
+        "title": "テスト商品（ゆうパケット・小型）",
+        "price": "1200.00",
+        "grams": 200,
+        "sku": "TEST-SVC-004",
+        "requires_shipping": true
+      }
+    ],
+    "shipping_address": {
+      "first_name": "美咲",
+      "last_name": "高橋",
+      "company": null,
+      "address1": "4-4-4",
+      "address2": "アパート202",
+      "city": "福岡市博多区",
+      "province": "福岡県",
+      "province_code": "JP-40",
+      "country": "Japan",
+      "country_code": "JP",
+      "zip": "812-0001",
+      "phone": "092-1234-5678"
+    },
+    "shipping_lines": [
+      {
+        "title": "ヤマト運輸 クロネコゆうパケット",
+        "price": "180.00",
+        "code": "YAMATO_YU_PACKET",
+        "source": "plusshipping"
+      }
+    ],
+    "financial_status": "pending"
+  },
+  "shipping_metadata": {
+    "carrier": "yamato",
+    "service_type": "YAMATO_SERVICE_TYPE_YU_PACKET",
+    "service_code": "YM:003",
+    "service_type_code": "3",
+    "packing_size": null,
+    "consignor_prefecture": "東京都",
+    "destination_prefecture": "福岡県",
+    "cool_type": "YAMATO_COOL_TYPE_NONE",
+    "purchase_type": "single",
+    "note": "クロネコゆうパケットは全国一律料金"
+  }
+}

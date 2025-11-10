@@ -1,0 +1,50 @@
+{
+  "currency": "JPY",
+  "lineItems": [
+    {
+      "title": "高額商品（ノートPC）",
+      "priceSet": {
+        "shopMoney": {
+          "amount": 150000,
+          "currencyCode": "JPY"
+        }
+      },
+      "quantity": 1,
+      "taxLines": [
+        {
+          "priceSet": {
+            "shopMoney": {
+              "amount": 15000,
+              "currencyCode": "JPY"
+            }
+          },
+          "rate": 0.1,
+          "title": "消費税"
+        }
+      ]
+    }
+  ],
+  "shippingAddress": {
+    "firstName": "三郎",
+    "lastName": "田中",
+    "address1": "4-4-4",
+    "city": "新宿区",
+    "province": "東京都",
+    "country": "JP",
+    "zip": "160-0001",
+    "phone": "+8190-7777-8888"
+  },
+  "phone": "+81 90 7777 8888",
+  "transactions": [
+    {
+      "kind": "SALE",
+      "status": "SUCCESS",
+      "amountSet": {
+        "shopMoney": {
+          "amount": 165000,
+          "currencyCode": "JPY"
+        }
+      }
+    }
+  ]
+}

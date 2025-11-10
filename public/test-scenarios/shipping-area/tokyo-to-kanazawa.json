@@ -1,0 +1,56 @@
+{
+  "description": "配送エリアテスト: 東京→金沢（北陸地方）",
+  "test_id": "AREA-009",
+  "order": {
+    "email": "customer@example.com",
+    "fulfillment_status": "unfulfilled",
+    "send_receipt": false,
+    "send_fulfillment_receipt": false,
+    "note": "テスト注文: 東京→金沢 北陸地方",
+    "tags": "test, area, tokyo-kanazawa, hokuriku",
+    "line_items": [
+      {
+        "variant_id": null,
+        "quantity": 1,
+        "title": "テスト商品（東京→金沢）",
+        "price": "2700.00",
+        "grams": 650,
+        "sku": "TEST-AREA-009",
+        "requires_shipping": true
+      }
+    ],
+    "shipping_address": {
+      "first_name": "愛",
+      "last_name": "金沢",
+      "company": null,
+      "address1": "1-1-1 兼六町",
+      "address2": null,
+      "city": "金沢市",
+      "province": "石川県",
+      "province_code": "JP-17",
+      "country": "Japan",
+      "country_code": "JP",
+      "zip": "920-0001",
+      "phone": "076-1234-5678"
+    },
+    "shipping_lines": [
+      {
+        "title": "日本郵便 ゆうパック 60サイズ",
+        "price": "980.00",
+        "code": "JP_YUPACK_60",
+        "source": "plusshipping"
+      }
+    ],
+    "financial_status": "pending"
+  },
+  "shipping_metadata": {
+    "carrier": "japanpost",
+    "service_type": "JP_PARCEL_SERVICE_CODE_YU_PACK",
+    "service_code": "JP:000",
+    "packing_size": 60,
+    "consignor_prefecture": "東京都",
+    "destination_prefecture": "石川県",
+    "purchase_type": "single",
+    "expected_base_fee": 980
+  }
+}

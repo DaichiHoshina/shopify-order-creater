@@ -1,0 +1,55 @@
+{
+  "description": "配送エリアテスト: 東京→高松（四国地方）",
+  "test_id": "AREA-010",
+  "order": {
+    "email": "customer@example.com",
+    "fulfillment_status": "unfulfilled",
+    "send_receipt": false,
+    "send_fulfillment_receipt": false,
+    "note": "テスト注文: 東京→高松 四国地方",
+    "tags": "test, area, tokyo-takamatsu, shikoku",
+    "line_items": [
+      {
+        "variant_id": null,
+        "quantity": 1,
+        "title": "テスト商品（東京→高松）",
+        "price": "3300.00",
+        "grams": 1100,
+        "sku": "TEST-AREA-010",
+        "requires_shipping": true
+      }
+    ],
+    "shipping_address": {
+      "first_name": "拓也",
+      "last_name": "高松",
+      "company": null,
+      "address1": "1-1-1 丸亀町",
+      "address2": null,
+      "city": "高松市",
+      "province": "香川県",
+      "province_code": "JP-37",
+      "country": "Japan",
+      "country_code": "JP",
+      "zip": "760-0001",
+      "phone": "087-1234-5678"
+    },
+    "shipping_lines": [
+      {
+        "title": "ヤマト運輸 宅急便 60サイズ",
+        "price": "1150.00",
+        "code": "YAMATO_TAKKYUBIN_60",
+        "source": "plusshipping"
+      }
+    ],
+    "financial_status": "pending"
+  },
+  "shipping_metadata": {
+    "carrier": "yamato",
+    "service_type": "YAMATO_SERVICE_TYPE_TAKKYUBIN",
+    "packing_size": 60,
+    "consignor_prefecture": "東京都",
+    "destination_prefecture": "香川県",
+    "purchase_type": "single",
+    "expected_base_fee": 1150
+  }
+}

@@ -321,7 +321,7 @@
     // テンプレート一覧を読み込み（カテゴリ対応）
     async function loadTemplates() {
       try {
-        const response = await fetch('/api/templates');
+        const response = await fetch('./templates.json');
         const data = await response.json();
 
         data.categories.forEach(category => {
@@ -351,7 +351,7 @@
       }
 
       try {
-        const response = await fetch(`/api/templates/${filename}`);
+        const response = await fetch(`./${filename}`);
         const data = await response.json();
         orderJsonTextarea.value = JSON.stringify(data, null, 2);
       } catch (error) {

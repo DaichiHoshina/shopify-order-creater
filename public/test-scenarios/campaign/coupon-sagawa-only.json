@@ -1,0 +1,69 @@
+{
+  "description": "TC-CALC-003: 単品購入×キャンペーンID7×ヤマト：クーポンが適用されない（サービス限定のため）",
+  "test_id": "TC-CALC-003",
+  "order": {
+    "email": "customer@example.com",
+    "fulfillment_status": "unfulfilled",
+    "send_receipt": false,
+    "send_fulfillment_receipt": false,
+    "note": "テスト注文: 単品購入・ヤマト運輸・佐川限定クーポン非適用テスト",
+    "tags": "test, campaign, coupon-not-applied, single-purchase, yamato, service-restriction",
+    "line_items": [
+      {
+        "variant_id": null,
+        "quantity": 1,
+        "title": "テスト商品D",
+        "price": "1800.00",
+        "grams": 700,
+        "sku": "TEST-SKU-006",
+        "requires_shipping": true
+      }
+    ],
+    "shipping_address": {
+      "first_name": "三郎",
+      "last_name": "田中",
+      "company": null,
+      "address1": "4-4-4",
+      "address2": null,
+      "city": "札幌市中央区",
+      "province": "北海道",
+      "province_code": "JP-01",
+      "country": "Japan",
+      "country_code": "JP",
+      "zip": "060-0001",
+      "phone": "011-1234-5678"
+    },
+    "shipping_lines": [
+      {
+        "title": "ヤマト運輸 宅急便 60サイズ",
+        "price": "900.00",
+        "code": "YAMATO_TAKKYUBIN_60",
+        "source": "plusshipping"
+      }
+    ],
+    "financial_status": "pending"
+  },
+  "shipping_metadata": {
+    "carrier": "yamato",
+    "service_type": "YAMATO_SERVICE_TYPE_TAKKYUBIN",
+    "service_code": "YM:000",
+    "packing_size": 60,
+    "consignor_prefecture": "東京都",
+    "destination_prefecture": "北海道",
+    "purchase_type": "single",
+    "campaign_id": 7,
+    "campaign_name": "プラスシッピング感謝祭！佐川急便配送料1円キャンペーン！",
+    "expected_fee": 900,
+    "base_fee": 800,
+    "option_fee": 100
+  },
+  "test_expectations": {
+    "coupon_applied": false,
+    "total_shipping_fee": 900,
+    "campaign_id": 7,
+    "service_restriction": ["SG:000", "SG:140", "SG:150"],
+    "current_service": "YM:000",
+    "remaining_count_unchanged": true,
+    "reason": "service code not in campaign application_condition"
+  }
+}

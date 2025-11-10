@@ -1,0 +1,56 @@
+{
+  "description": "配送エリアテスト: 東京→広島（中国地方）",
+  "test_id": "AREA-008",
+  "order": {
+    "email": "customer@example.com",
+    "fulfillment_status": "unfulfilled",
+    "send_receipt": false,
+    "send_fulfillment_receipt": false,
+    "note": "テスト注文: 東京→広島 中国地方",
+    "tags": "test, area, tokyo-hiroshima, chugoku",
+    "line_items": [
+      {
+        "variant_id": null,
+        "quantity": 1,
+        "title": "テスト商品（東京→広島）",
+        "price": "3100.00",
+        "grams": 950,
+        "sku": "TEST-AREA-008",
+        "requires_shipping": true
+      }
+    ],
+    "shipping_address": {
+      "first_name": "誠",
+      "last_name": "広島",
+      "company": null,
+      "address1": "1-1-1 中区",
+      "address2": null,
+      "city": "広島市中区",
+      "province": "広島県",
+      "province_code": "JP-34",
+      "country": "Japan",
+      "country_code": "JP",
+      "zip": "730-0001",
+      "phone": "082-1234-5678"
+    },
+    "shipping_lines": [
+      {
+        "title": "佐川急便 飛脚宅配便 60サイズ",
+        "price": "1100.00",
+        "code": "SAGAWA_LAND_60",
+        "source": "plusshipping"
+      }
+    ],
+    "financial_status": "pending"
+  },
+  "shipping_metadata": {
+    "carrier": "sagawa",
+    "service_type": "SAGAWA_ITEM_CODE_LAND",
+    "service_code": "SG:000",
+    "packing_size": 60,
+    "consignor_prefecture": "東京都",
+    "destination_prefecture": "広島県",
+    "purchase_type": "single",
+    "expected_base_fee": 1100
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "description": "配送エリアテスト: 大阪→大阪（同一府県）",
+  "test_id": "AREA-015",
+  "order": {
+    "email": "customer@example.com",
+    "fulfillment_status": "unfulfilled",
+    "send_receipt": false,
+    "send_fulfillment_receipt": false,
+    "note": "テスト注文: 大阪→大阪 同一府県",
+    "tags": "test, area, osaka-osaka, same-prefecture",
+    "line_items": [
+      {
+        "variant_id": null,
+        "quantity": 1,
+        "title": "テスト商品（大阪→大阪）",
+        "price": "1900.00",
+        "grams": 530,
+        "sku": "TEST-AREA-015",
+        "requires_shipping": true
+      }
+    ],
+    "shipping_address": {
+      "first_name": "直樹",
+      "last_name": "堺",
+      "company": null,
+      "address1": "1-1-1 堺区",
+      "address2": "マンション202",
+      "city": "堺市堺区",
+      "province": "大阪府",
+      "province_code": "JP-27",
+      "country": "Japan",
+      "country_code": "JP",
+      "zip": "590-0001",
+      "phone": "072-1234-5678"
+    },
+    "shipping_lines": [
+      {
+        "title": "ヤマト運輸 宅急便 60サイズ",
+        "price": "850.00",
+        "code": "YAMATO_TAKKYUBIN_60",
+        "source": "plusshipping"
+      }
+    ],
+    "financial_status": "pending"
+  },
+  "shipping_metadata": {
+    "carrier": "yamato",
+    "service_type": "YAMATO_SERVICE_TYPE_TAKKYUBIN",
+    "packing_size": 60,
+    "consignor_prefecture": "大阪府",
+    "destination_prefecture": "大阪府",
+    "purchase_type": "single",
+    "expected_base_fee": 850
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "description": "便種テスト: 佐川急便 飛脚クール便（冷凍）",
+  "test_id": "SERVICE-012",
+  "order": {
+    "email": "customer@example.com",
+    "fulfillment_status": "unfulfilled",
+    "send_receipt": false,
+    "send_fulfillment_receipt": false,
+    "note": "テスト注文: 佐川急便 飛脚クール便（冷凍）",
+    "tags": "test, service-type, sagawa, cool, frozen",
+    "line_items": [
+      {
+        "variant_id": null,
+        "quantity": 1,
+        "title": "テスト商品（要冷凍・アイスクリーム）",
+        "price": "5500.00",
+        "grams": 1600,
+        "sku": "TEST-SVC-012",
+        "requires_shipping": true,
+        "properties": [
+          {
+            "name": "保存方法",
+            "value": "要冷凍（-18℃以下）"
+          }
+        ]
+      }
+    ],
+    "shipping_address": {
+      "first_name": "裕介",
+      "last_name": "岡田",
+      "company": null,
+      "address1": "5-5-5",
+      "address2": null,
+      "city": "金沢市",
+      "province": "石川県",
+      "province_code": "JP-17",
+      "country": "Japan",
+      "country_code": "JP",
+      "zip": "920-0001",
+      "phone": "076-1234-5678"
+    },
+    "shipping_lines": [
+      {
+        "title": "佐川急便 飛脚クール便（冷凍）60サイズ",
+        "price": "1450.00",
+        "code": "SAGAWA_COOL_FROZEN_60",
+        "source": "plusshipping"
+      }
+    ],
+    "financial_status": "pending"
+  },
+  "shipping_metadata": {
+    "carrier": "sagawa",
+    "service_type": "SAGAWA_ITEM_CODE_COOL_FROZEN",
+    "service_code": "SG:COOL_FROZEN",
+    "binsyu_code": "COOL",
+    "packing_size": 60,
+    "consignor_prefecture": "東京都",
+    "destination_prefecture": "石川県",
+    "cool_type": "frozen",
+    "purchase_type": "single",
+    "note": "佐川急便の冷凍クール便"
+  }
+}

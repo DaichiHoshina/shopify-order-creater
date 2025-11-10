@@ -1,0 +1,70 @@
+{
+  "description": "TC-CALC-002: 単品購入×キャンペーンID7×佐川SG:000：クーポンが適用される",
+  "test_id": "TC-CALC-002",
+  "order": {
+    "email": "customer@example.com",
+    "fulfillment_status": "unfulfilled",
+    "send_receipt": false,
+    "send_fulfillment_receipt": false,
+    "note": "テスト注文: 単品購入・佐川急便・サービス限定クーポン適用テスト",
+    "tags": "test, campaign, coupon-applied, single-purchase, sagawa, service-specific",
+    "line_items": [
+      {
+        "variant_id": null,
+        "quantity": 1,
+        "title": "テスト商品B",
+        "price": "2000.00",
+        "grams": 800,
+        "sku": "TEST-SKU-002",
+        "requires_shipping": true
+      }
+    ],
+    "shipping_address": {
+      "first_name": "花子",
+      "last_name": "佐藤",
+      "company": null,
+      "address1": "2-2-2",
+      "address2": null,
+      "city": "福岡市博多区",
+      "province": "福岡県",
+      "province_code": "JP-40",
+      "country": "Japan",
+      "country_code": "JP",
+      "zip": "812-0001",
+      "phone": "092-1234-5678"
+    },
+    "shipping_lines": [
+      {
+        "title": "佐川急便 飛脚宅配便 60サイズ",
+        "price": "1.00",
+        "code": "SAGAWA_LAND_60",
+        "source": "plusshipping"
+      }
+    ],
+    "financial_status": "pending"
+  },
+  "shipping_metadata": {
+    "carrier": "sagawa",
+    "service_type": "SAGAWA_ITEM_CODE_LAND",
+    "service_code": "SG:000",
+    "binsyu_code": "000",
+    "packing_size": 60,
+    "consignor_prefecture": "東京都",
+    "destination_prefecture": "福岡県",
+    "purchase_type": "single",
+    "campaign_id": 7,
+    "campaign_name": "プラスシッピング感謝祭！佐川急便配送料1円キャンペーン！",
+    "expected_fee": 1,
+    "expected_discount": 599,
+    "base_fee": 500,
+    "option_fee": 100
+  },
+  "test_expectations": {
+    "coupon_applied": true,
+    "total_shipping_fee": 1,
+    "campaign_id": 7,
+    "service_restriction": ["SG:000", "SG:140", "SG:150"],
+    "remaining_count_before": 5,
+    "remaining_count_after": 4
+  }
+}

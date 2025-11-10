@@ -1,0 +1,57 @@
+{
+  "description": "便種テスト: 佐川急便 飛脚宅配便（SG:150）",
+  "test_id": "SERVICE-010",
+  "order": {
+    "email": "customer@example.com",
+    "fulfillment_status": "unfulfilled",
+    "send_receipt": false,
+    "send_fulfillment_receipt": false,
+    "note": "テスト注文: 佐川急便 飛脚宅配便（SG:150）",
+    "tags": "test, service-type, sagawa, sg150, option-service",
+    "line_items": [
+      {
+        "variant_id": null,
+        "quantity": 1,
+        "title": "テスト商品（佐川SG:150）",
+        "price": "2900.00",
+        "grams": 870,
+        "sku": "TEST-SVC-010",
+        "requires_shipping": true
+      }
+    ],
+    "shipping_address": {
+      "first_name": "翔",
+      "last_name": "吉田",
+      "company": null,
+      "address1": "3-3-3",
+      "address2": null,
+      "city": "京都市中京区",
+      "province": "京都府",
+      "province_code": "JP-26",
+      "country": "Japan",
+      "country_code": "JP",
+      "zip": "604-0001",
+      "phone": "075-1234-5678"
+    },
+    "shipping_lines": [
+      {
+        "title": "佐川急便 飛脚宅配便（SG:150）60サイズ",
+        "price": "1080.00",
+        "code": "SAGAWA_SG150_60",
+        "source": "plusshipping"
+      }
+    ],
+    "financial_status": "pending"
+  },
+  "shipping_metadata": {
+    "carrier": "sagawa",
+    "service_type": "SAGAWA_ITEM_CODE_SG150",
+    "service_code": "SG:150",
+    "binsyu_code": "150",
+    "packing_size": 60,
+    "consignor_prefecture": "東京都",
+    "destination_prefecture": "京都府",
+    "purchase_type": "single",
+    "note": "佐川急便のオプションサービス（SG:150）"
+  }
+}
