@@ -1,18 +1,18 @@
 {
-  "description": "発送元エリアテスト: 北陸（石川）→東京",
+  "description": "配送先エリアテスト: 北陸",
   "test_id": "CONSIGNOR-006",
   "order": {
     "email": "customer@example.com",
     "fulfillment_status": "unfulfilled",
     "send_receipt": false,
     "send_fulfillment_receipt": false,
-    "note": "テスト注文: 北陸（石川）発送→東京配送",
-    "tags": "test, consignor-area, hokuriku, ishikawa, area-06",
+    "note": "テスト注文: 北陸配送",
+    "tags": "配送先:北陸",
     "line_items": [
       {
         "variant_id": null,
-        "quantity": 1,
-        "title": "テスト商品（北陸発送）",
+        "quantity": 100,
+        "title": "配送先:北陸",
         "price": "3000.00",
         "grams": 800,
         "sku": "TEST-CONSIGNOR-006",
@@ -20,18 +20,18 @@
       }
     ],
     "shipping_address": {
-      "first_name": "太郎",
-      "last_name": "東京",
-      "company": null,
-      "address1": "1-1-1 千代田",
+      "first_name": "石川県庁",
+      "last_name": "担当者",
+      "company": "石川県庁",
+      "address1": "鞍月1-1",
       "address2": null,
-      "city": "千代田区",
-      "province": "東京都",
-      "province_code": "JP-13",
+      "city": "金沢市",
+      "province": "石川県",
+      "province_code": "JP-17",
       "country": "Japan",
       "country_code": "JP",
-      "zip": "100-0001",
-      "phone": "03-1234-5678"
+      "zip": "920-8580",
+      "phone": "076-225-1111"
     },
     "shipping_lines": [
       {
@@ -47,9 +47,9 @@
     "carrier": "yamato",
     "service_type": "YAMATO_SERVICE_TYPE_TAKKYUBIN",
     "packing_size": 60,
-    "consignor_prefecture": "石川県",
-    "consignor_city": "金沢市",
-    "destination_prefecture": "東京都",
+    "consignor_prefecture": "東京都",
+    "consignor_city": "江東区",
+    "destination_prefecture": "石川県",
     "purchase_type": "single",
     "expected_base_fee": 900,
     "area_classification": "北陸エリア",

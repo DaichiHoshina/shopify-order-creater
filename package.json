@@ -1,38 +1,42 @@
 {
   "name": "shopify-order-creator",
   "version": "1.0.0",
-  "description": "CLI tool to create Shopify orders from DynamoDB session data",
-  "main": "dist/index.js",
+  "description": "Bulk Shopify order creation tool with 13 shipping area templates",
+  "main": "dist/create-bulk-orders-v2.js",
   "bin": {
-    "shopify-order-creator": "./dist/index.js"
+    "ps-cli": "./dist/cli/index.js"
   },
   "scripts": {
+    "cli": "ts-node src/cli/index.ts",
     "build": "tsc",
-    "vercel-build": "tsc",
-    "start": "node dist/server.js",
-    "dev": "ts-node src/index.ts",
-    "web": "npm run build && node dist/server.js",
-    "dev:web": "ts-node src/server.ts"
+    "bulk-orders": "npm run build && node dist/create-bulk-orders-v2.js",
+    "dev:bulk-orders": "ts-node src/create-bulk-orders-v2.ts",
+    "create-locations": "npm run build && node dist/create-locations.js",
+    "dev:create-locations": "ts-node src/create-locations.ts",
+    "update-templates": "ts-node src/update-templates.ts",
+    "generate-sql": "ts-node src/generate-consignor-sql.ts",
+    "generate-consignor-sql": "ts-node src/generate-consignor-sql-for-store-management.ts"
   },
   "keywords": [
     "shopify",
-    "dynamodb",
-    "cli",
-    "order"
+    "order",
+    "bulk"
   ],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.705.0",
-    "@aws-sdk/util-dynamodb": "^3.705.0",
     "axios": "^1.7.9",
-    "commander": "^12.1.0",
+    "chalk": "^5.6.2",
+    "commander": "^14.0.2",
     "dotenv": "^16.4.7",
-    "express": "^5.1.0",
-    "mysql2": "^3.15.3"
+    "handlebars": "^4.7.8",
+    "inquirer": "^12.11.0",
+    "js-yaml": "^4.1.0",
+    "ora": "^9.0.0"
   },
   "devDependencies": {
-    "@types/express": "^5.0.5",
+    "@types/inquirer": "^9.0.9",
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "^22.10.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2"

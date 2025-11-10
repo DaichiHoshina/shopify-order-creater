@@ -1,0 +1,81 @@
+/**
+ * 1件のテスト注文を作成するスクリプト
+ */
+
+import * as dotenv from 'dotenv';
+import * as fs from 'fs';
+import * as path from 'path';
+import { createShopifyOrder } from './shopify';
+import { extractOrderData } from './template-converter';
+
+dotenv.config();
+
+const SHOPIFY_STORE_URL = process.env.SHOPIFY_STORE_URL;
+const SHOPIFY_ACCESS_TOKEN = process.env.SHOPIFY_ACCESS_TOKEN;
+
+if (!SHOPIFY_STORE_URL || !SHOPIFY_ACCESS_TOKEN) {
+  console.error('❌ エラー: 環境変数 SHOPIFY_STORE_URL と SHOPIFY_ACCESS_TOKEN を設定してください');
+  process.exit(1);
+}
+
+async function createTestOrder() {
+  const templateFile = 'hokkaido-to-tokyo.json';
+  const templatePath = path.join(__dirname, '../test-scenarios/consignor-area', templateFile);
+
+  console.log('\n🧪 テスト注文を作成します（北海道エリア）\n');
+  console.log(`📦 ストア: ${SHOPIFY_STORE_URL}`);
+  console.log(`📄 テンプレート: ${templateFile}\n`);
+
+  try {
+    // テンプレートファイルを読み込み
+    const templateContent = fs.readFileSync(templatePath, 'utf-8');
+    const template = JSON.parse(templateContent);
+
+    // テンプレート内容を確認
+    console.log('📋 テンプレート内容:');
+    console.log(`   - 商品名: ${template.order.line_items[0]?.title}`);
+    console.log(`   - アイテム数: ${template.order.line_items[0]?.quantity}個`);
+    console.log(`   - タグ: ${template.order.tags}`);
+    console.log(`   - 配送元: ${template.shipping_metadata.consignor_prefecture} ${template.shipping_metadata.consignor_city}`);
+    console.log(`   - 配送先: ${template.order.shipping_address.province} ${template.order.shipping_address.city}\n`);
+
+    // テンプレートデータをShopify API形式に変換
+    const orderData = extractOrderData(template);
+
+    // customAttributesの内容を確認
+    console.log('🔍 customAttributes:');
+    orderData.customAttributes?.forEach(attr => {
+      console.log(`   - ${attr.key}: ${attr.value}`);
+    });
+    console.log(`\n🏷️  tags: ${orderData.tags?.join(', ')}\n`);
+
+    // Shopify注文を作成
+    console.log('🔄 Shopify注文を作成中...');
+    const result = await createShopifyOrder(
+      SHOPIFY_STORE_URL!,
+      SHOPIFY_ACCESS_TOKEN!,
+      orderData
+    );
+
+    const orderId = result.data?.orderCreate?.order?.id || 'N/A';
+    console.log(`\n✅ 成功！注文ID: ${orderId}\n`);
+
+  } catch (error) {
+    console.error(`\n❌ 失敗しました`);
+    if (error instanceof Error) {
+      console.error(`エラー: ${error.message}\n`);
+    }
+    process.exit(1);
+  }
+}
+
+// スクリプトを実行
+createTestOrder()
+  .then(() => {
+    console.log('✨ テスト完了');
+    process.exit(0);
+  })
+  .catch((error) => {
+    console.error('❌ エラーが発生しました:', error);
+    process.exit(1);
+  });

@@ -1,0 +1,18 @@
+# Plus Shipping Shop設定ファイル
+# 各Shopの設定とKubernetes環境情報を管理
+
+shops:
+  81-test-store-plan-silver:
+    shopify_shop_id: "81-test-store-plan-silver.myshopify.com"
+    store_id: 404
+    environments:
+      tes:
+        namespace: "store"
+        context: "arn:aws:eks:ap-northeast-1:691177763108:cluster/shopifyshipping-tes-main"
+        db_name: "store_management"
+        db_config_map: "store-management-env"
+        db_secret: "store-management-env"
+    credentials:
+      sagawa_detail_id: 556
+      yamato_detail_id: 528
+      japan_post_detail_id: 0

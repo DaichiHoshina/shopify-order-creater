@@ -109,7 +109,7 @@ const ORDER_CREATE_MUTATION = `
 export function buildShopifyApiUrl(shopifyStoreUrl: string): string {
   // URLから "https://" を除去し、ドメインのみ取得
   const domain = shopifyStoreUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
-  return `https://${domain}/admin/api/2025-04/graphql.json`;
+  return `https://${domain}/admin/api/2024-10/graphql.json`;
 }
 
 /**
@@ -164,9 +164,17 @@ export async function createShopifyOrder(
     if (response.data.data.orderCreate.userErrors.length > 0) {
       console.error('❌ Shopify API returned errors:');
       response.data.data.orderCreate.userErrors.forEach((error) => {
-        console.error(`   - ${error.message} (${error.field.join('.')})`);
+        const fieldPath = error.field ? error.field.join('.') : 'N/A';
+        console.error(`   - ${error.message} (${fieldPath})`);
       });
-      throw new Error('Failed to create order due to validation errors');
+
+      // エラーメッセージを詳細に返す
+      const errorMessages = response.data.data.orderCreate.userErrors.map((error) => {
+        const fieldPath = error.field ? error.field.join('.') : 'N/A';
+        return `${error.message} (${fieldPath})`;
+      }).join(', ');
+
+      throw new Error(`Shopify validation errors: ${errorMessages}`);
     }
 
     const order = response.data.data.orderCreate.order;

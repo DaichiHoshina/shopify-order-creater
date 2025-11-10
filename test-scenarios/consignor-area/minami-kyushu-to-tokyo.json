@@ -1,42 +1,42 @@
 {
-  "description": "配送先エリアテスト: 北海道",
-  "test_id": "CONSIGNOR-001",
+  "description": "配送先エリアテスト: 南九州",
+  "test_id": "CONSIGNOR-011",
   "order": {
     "email": "customer@example.com",
     "fulfillment_status": "unfulfilled",
     "send_receipt": false,
     "send_fulfillment_receipt": false,
-    "note": "テスト注文: 北海道配送",
-    "tags": "配送先:北海道",
+    "note": "テスト注文: 南九州配送",
+    "tags": "配送先:南九州",
     "line_items": [
       {
         "variant_id": null,
         "quantity": 100,
-        "title": "配送先:北海道",
+        "title": "配送先:南九州",
         "price": "3000.00",
         "grams": 800,
-        "sku": "TEST-CONSIGNOR-001",
+        "sku": "TEST-CONSIGNOR-011",
         "requires_shipping": true
       }
     ],
     "shipping_address": {
-      "first_name": "北海道庁",
+      "first_name": "鹿児島県庁",
       "last_name": "担当者",
-      "company": "北海道庁",
-      "address1": "北3条西6丁目",
+      "company": "鹿児島県庁",
+      "address1": "鴨池新町10-1",
       "address2": null,
-      "city": "札幌市中央区",
-      "province": "北海道",
-      "province_code": "JP-01",
+      "city": "鹿児島市",
+      "province": "鹿児島県",
+      "province_code": "JP-46",
       "country": "Japan",
       "country_code": "JP",
-      "zip": "060-8588",
-      "phone": "011-231-4111"
+      "zip": "890-8577",
+      "phone": "099-286-2111"
     },
     "shipping_lines": [
       {
         "title": "ヤマト運輸 宅急便 60サイズ",
-        "price": "1300.00",
+        "price": "1100.00",
         "code": "YAMATO_TAKKYUBIN_60",
         "source": "plusshipping"
       }
@@ -49,10 +49,10 @@
     "packing_size": 60,
     "consignor_prefecture": "東京都",
     "consignor_city": "江東区",
-    "destination_prefecture": "北海道",
+    "destination_prefecture": "鹿児島県",
     "purchase_type": "single",
-    "expected_base_fee": 1300,
-    "area_classification": "北海道エリア",
-    "area_code": "01"
+    "expected_base_fee": 1100,
+    "area_classification": "南九州エリア",
+    "area_code": "12"
   }
 }

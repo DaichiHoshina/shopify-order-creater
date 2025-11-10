@@ -1,18 +1,18 @@
 {
-  "description": "発送元エリアテスト: 関東（神奈川）→東京",
+  "description": "配送先エリアテスト: 関東",
   "test_id": "CONSIGNOR-004",
   "order": {
     "email": "customer@example.com",
     "fulfillment_status": "unfulfilled",
     "send_receipt": false,
     "send_fulfillment_receipt": false,
-    "note": "テスト注文: 関東（神奈川）発送→東京配送",
-    "tags": "test, consignor-area, kanto, kanagawa, area-04",
+    "note": "テスト注文: 関東配送",
+    "tags": "配送先:関東",
     "line_items": [
       {
         "variant_id": null,
-        "quantity": 1,
-        "title": "テスト商品（関東発送）",
+        "quantity": 100,
+        "title": "配送先:関東",
         "price": "3000.00",
         "grams": 800,
         "sku": "TEST-CONSIGNOR-004",
@@ -20,18 +20,18 @@
       }
     ],
     "shipping_address": {
-      "first_name": "太郎",
-      "last_name": "東京",
-      "company": null,
-      "address1": "1-1-1 千代田",
+      "first_name": "東京都庁",
+      "last_name": "担当者",
+      "company": "東京都庁",
+      "address1": "西新宿2-8-1",
       "address2": null,
-      "city": "千代田区",
+      "city": "新宿区",
       "province": "東京都",
       "province_code": "JP-13",
       "country": "Japan",
       "country_code": "JP",
-      "zip": "100-0001",
-      "phone": "03-1234-5678"
+      "zip": "163-8001",
+      "phone": "03-5321-1111"
     },
     "shipping_lines": [
       {
@@ -47,8 +47,8 @@
     "carrier": "yamato",
     "service_type": "YAMATO_SERVICE_TYPE_TAKKYUBIN",
     "packing_size": 60,
-    "consignor_prefecture": "神奈川県",
-    "consignor_city": "横浜市中区",
+    "consignor_prefecture": "東京都",
+    "consignor_city": "江東区",
     "destination_prefecture": "東京都",
     "purchase_type": "single",
     "expected_base_fee": 900,

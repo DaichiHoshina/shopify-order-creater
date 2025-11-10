@@ -30,6 +30,13 @@ export interface OrderCreateInput {
   shippingAddress: ShippingAddress;
   phone: string;
   transactions: Transaction[];
+  customAttributes?: CustomAttribute[];
+  tags?: string[];
+}
+
+export interface CustomAttribute {
+  key: string;
+  value: string;
 }
 
 export interface LineItem {
