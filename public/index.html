@@ -427,6 +427,189 @@
     loadTemplates();
     loadStores();
 
+    // デフォルトの注文データ
+    const DEFAULT_ORDER = {
+      currency: 'EUR',
+      lineItems: [
+        {
+          title: 'Big Brown Bear Boots',
+          priceSet: {
+            shopMoney: {
+              amount: 74.99,
+              currencyCode: 'EUR',
+            },
+          },
+          quantity: 3,
+          taxLines: [
+            {
+              priceSet: {
+                shopMoney: {
+                  amount: 13.5,
+                  currencyCode: 'EUR',
+                },
+              },
+              rate: 0.06,
+              title: 'State tax',
+            },
+          ],
+        },
+      ],
+      shippingAddress: {
+        firstName: '太郎',
+        lastName: '山田',
+        address1: '1-1',
+        city: '千代田区千代田',
+        province: '東京都',
+        country: 'JP',
+        zip: '100-0001',
+        phone: '+8190-8765-4321',
+      },
+      phone: '+81 90 8765 4321',
+      transactions: [
+        {
+          kind: 'SALE',
+          status: 'SUCCESS',
+          amountSet: {
+            shopMoney: {
+              amount: 238.47,
+              currencyCode: 'EUR',
+            },
+          },
+        },
+      ],
+    };
+
+    // GraphQL Mutation
+    const ORDER_CREATE_MUTATION = `
+      mutation orderCreate($order: OrderCreateOrderInput!, $options: OrderCreateOptionsInput) {
+        orderCreate(order: $order, options: $options) {
+          userErrors {
+            field
+            message
+          }
+          order {
+            id
+            totalTaxSet {
+              shopMoney {
+                amount
+                currencyCode
+              }
+            }
+            phone
+            lineItems(first: 5) {
+              nodes {
+                variant {
+                  id
+                }
+                id
+                title
+                quantity
+                taxLines {
+                  title
+                  rate
+                  priceSet {
+                    shopMoney {
+                      amount
+                      currencyCode
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    `;
+
+    // 電話番号の正規化
+    function normalizePhoneNumber(phone) {
+      if (!phone) return '';
+      if (phone.startsWith('+81')) {
+        return phone.replace(/[^+\d]/g, '');
+      }
+      let cleaned = phone.replace(/[^\d]/g, '');
+      if (cleaned.startsWith('0')) {
+        cleaned = cleaned.substring(1);
+      }
+      return `+81${cleaned}`;
+    }
+
+    // テンプレートデータから注文データを抽出
+    function extractOrderData(templateData) {
+      if (templateData.order && typeof templateData.order === 'object') {
+        const { order } = templateData;
+
+        const lineItems = order.line_items?.map(item => ({
+          title: item.title,
+          priceSet: {
+            shopMoney: {
+              amount: parseFloat(item.price),
+              currencyCode: 'JPY',
+            },
+          },
+          quantity: item.quantity,
+          requiresShipping: item.requires_shipping,
+        }));
+
+        const shippingAddress = order.shipping_address ? {
+          firstName: order.shipping_address.first_name,
+          lastName: order.shipping_address.last_name,
+          address1: order.shipping_address.address1,
+          address2: order.shipping_address.address2,
+          city: order.shipping_address.city,
+          province: order.shipping_address.province,
+          country: order.shipping_address.country_code || order.shipping_address.country,
+          zip: order.shipping_address.zip,
+          phone: normalizePhoneNumber(order.shipping_address.phone),
+        } : undefined;
+
+        let totalAmount = 0;
+        if (order.line_items) {
+          totalAmount += order.line_items.reduce((sum, item) => {
+            return sum + (parseFloat(item.price) * item.quantity);
+          }, 0);
+        }
+        if (order.shipping_lines && order.shipping_lines.length > 0) {
+          totalAmount += parseFloat(order.shipping_lines[0].price);
+        }
+
+        const transactions = [
+          {
+            kind: 'SALE',
+            status: 'SUCCESS',
+            amountSet: {
+              shopMoney: {
+                amount: totalAmount,
+                currencyCode: 'JPY',
+              },
+            },
+          },
+        ];
+
+        return {
+          currency: 'JPY',
+          lineItems,
+          shippingAddress,
+          phone: normalizePhoneNumber(order.shipping_address?.phone || ''),
+          transactions,
+        };
+      }
+
+      const cleanData = {};
+      if (templateData.currency) cleanData.currency = templateData.currency;
+      if (templateData.lineItems) cleanData.lineItems = templateData.lineItems;
+      if (templateData.shippingAddress) {
+        cleanData.shippingAddress = {
+          ...templateData.shippingAddress,
+          phone: normalizePhoneNumber(templateData.shippingAddress.phone),
+        };
+      }
+      if (templateData.phone) cleanData.phone = normalizePhoneNumber(templateData.phone);
+      if (templateData.transactions) cleanData.transactions = templateData.transactions;
+
+      return cleanData;
+    }
+
     // フォーム送信
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -439,6 +622,7 @@
 
       // ストア名からURLを生成
       const storeUrl = `https://${storeName}.myshopify.com`;
+      const apiUrl = `https://${storeName}.myshopify.com/admin/api/2025-04/graphql.json`;
 
       // バリデーション
       if (!storeName || !accessToken) {
@@ -451,15 +635,18 @@
         return;
       }
 
-      // JSON検証（カスタム注文の場合）
-      let parsedOrderData = null;
+      // 注文データを準備
+      let orderData;
       if (orderType === 'custom') {
         try {
-          parsedOrderData = JSON.parse(orderJson);
+          const parsedOrderData = JSON.parse(orderJson);
+          orderData = extractOrderData(parsedOrderData);
         } catch (error) {
           showResult('error', 'JSONパースエラー', `無効なJSON形式です: ${error.message}`);
           return;
         }
+      } else {
+        orderData = DEFAULT_ORDER;
       }
 
       // ローディング表示
@@ -469,39 +656,44 @@
       submitBtn.disabled = true;
 
       try {
-        const requestBody = {
-          storeUrl: storeUrl,
-          accessToken: accessToken,
-          orderType: orderType,
-          orderData: parsedOrderData
-        };
-
-        const response = await fetch('/api/create-order', {
+        const response = await fetch(apiUrl, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-Shopify-Access-Token': accessToken,
           },
-          body: JSON.stringify(requestBody)
+          body: JSON.stringify({
+            query: ORDER_CREATE_MUTATION,
+            variables: {
+              order: orderData,
+            },
+          }),
         });
 
         const data = await response.json();
 
-        if (response.ok) {
-          showResult('success', '✅ 注文作成成功！',
-            `<p><strong>Order ID:</strong> ${data.orderId}</p>
-             <p><strong>Phone:</strong> ${data.phone}</p>
-             <p><strong>Total Tax:</strong> ${data.totalTax}</p>
-             <p><strong>Line Items:</strong> ${data.lineItemsCount}</p>`
-          );
+        // エラーチェック
+        if (data.data && data.data.orderCreate) {
+          if (data.data.orderCreate.userErrors.length > 0) {
+            const errors = data.data.orderCreate.userErrors.map(e => `${e.message} (${e.field.join('.')})`).join('<br>');
+            showResult('error', '❌ バリデーションエラー', `<p>${errors}</p>`);
+          } else {
+            const order = data.data.orderCreate.order;
+            showResult('success', '✅ 注文作成成功！',
+              `<p><strong>Order ID:</strong> ${order.id}</p>
+               <p><strong>Phone:</strong> ${order.phone}</p>
+               <p><strong>Total Tax:</strong> ${order.totalTaxSet.shopMoney.amount} ${order.totalTaxSet.shopMoney.currencyCode}</p>
+               <p><strong>Line Items:</strong> ${order.lineItems.nodes.length}</p>`
+            );
+          }
         } else {
-          showResult('error', '❌ エラー',
-            `<p>${data.error || 'Unknown error'}</p>
-             ${data.details ? `<pre>${JSON.stringify(data.details, null, 2)}</pre>` : ''}`
+          showResult('error', '❌ APIエラー',
+            `<pre>${JSON.stringify(data, null, 2)}</pre>`
           );
         }
       } catch (error) {
         showResult('error', '❌ ネットワークエラー',
-          `<p>サーバーとの通信に失敗しました: ${error.message}</p>`
+          `<p>Shopify APIとの通信に失敗しました: ${error.message}</p>`
         );
       } finally {
         loading.classList.remove('active');
