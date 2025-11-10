@@ -42,6 +42,58 @@
       font-size: 14px;
     }
 
+    .nav {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 15px 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-brand {
+      font-size: 20px;
+      font-weight: bold;
+      color: white;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-link {
+      color: white;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: background 0.3s;
+    }
+
+    .nav-link:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .nav-link.active {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    body {
+      padding-top: 80px;
+    }
+
     .form-group {
       margin-bottom: 24px;
     }
@@ -234,6 +286,16 @@
   </style>
 </head>
 <body>
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="./index.html" class="nav-brand">🛍️ Shopify Order Creator</a>
+      <div class="nav-links">
+        <a href="./index.html" class="nav-link active">注文作成</a>
+        <a href="./create-store.html" class="nav-link">ストア管理</a>
+      </div>
+    </div>
+  </nav>
+
   <div class="container">
     <h1>🛍️ Shopify Order Creator</h1>
     <p class="subtitle">環境変数を使わずにブラウザから注文を作成できます</p>

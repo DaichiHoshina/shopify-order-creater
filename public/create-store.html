@@ -15,7 +15,56 @@
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
-      padding: 40px 20px;
+      padding: 80px 20px 40px;
+    }
+
+    .nav {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 15px 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-brand {
+      font-size: 20px;
+      font-weight: bold;
+      color: white;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 10px;
+    }
+
+    .nav-link {
+      color: white;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: background 0.3s;
+    }
+
+    .nav-link:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .nav-link.active {
+      background: rgba(255, 255, 255, 0.25);
+      font-weight: 600;
     }
 
     .container {
@@ -406,6 +455,16 @@
   </style>
 </head>
 <body>
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="./index.html" class="nav-brand">Shopify Order Creator</a>
+      <div class="nav-links">
+        <a href="./index.html" class="nav-link">注文作成</a>
+        <a href="./create-store.html" class="nav-link active">ストア管理</a>
+      </div>
+    </div>
+  </nav>
+
   <div class="container">
     <div class="header">
       <h1>🏪 Shopify開発ストア作成ガイド & 管理ツール</h1>
