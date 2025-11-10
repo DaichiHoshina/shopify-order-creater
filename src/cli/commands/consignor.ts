@@ -1,14 +1,14 @@
 /**
- * 配送元関連コマンド
+ * 配送元関連コマンド（新アーキテクチャ版）
+ *
+ * Clean Architecture + DDD + TDDで実装
+ * Use Caseを経由してビジネスロジックを実行
  */
 
-import * as fs from 'fs';
 import inquirer from 'inquirer';
 import { ConsignorSQLOptions, DeployOptions } from '../../types/index';
-import { loadShopConfig } from '../utils/config';
 import { logger } from '../utils/logger';
-import { k8s } from '../utils/kubernetes';
-import { ConsignorSQLGenerator } from '../../generators/consignor-sql';
+import { DIContainer } from '../../di/container';
 
 /**
  * 配送元SQL生成コマンド
@@ -17,20 +17,17 @@ export async function generateConsignorSQL(options: ConsignorSQLOptions): Promis
   try {
     logger.title('📦 Plus Shipping 配送元SQL生成');
 
-    // Shop設定を読み込み
-    const shopConfig = loadShopConfig(options.shop);
-    logger.success(`Shop: ${shopConfig.shopify_shop_id}`);
-    logger.info(`Store ID: ${shopConfig.store_id}`);
+    // Use Caseを取得
+    const useCase = DIContainer.getGenerateConsignorSQLUseCase();
 
-    // SQL生成
-    const generator = new ConsignorSQLGenerator();
-    const sql = generator.generateInsertSQL(shopConfig, options.testData || false);
+    // Use Caseを実行
+    const result = await useCase.execute({
+      shopName: options.shop,
+      isTestData: options.testData || false,
+      outputDir: options.output,
+    });
 
-    // ファイルに保存
-    const filename = options.testData ? 'insert_test_consignors.sql' : 'insert_consignors.sql';
-    const filepath = generator.saveToFile(sql, filename, options.output);
-
-    logger.success(`SQLファイルを生成しました: ${filepath}`);
+    logger.success(`SQLファイルを生成しました: ${result.filepath}`);
 
     if (options.testData) {
       logger.warning(
@@ -39,9 +36,9 @@ export async function generateConsignorSQL(options: ConsignorSQLOptions): Promis
     }
 
     logger.section('📊 生成内容');
-    logger.log(`  - 配送元数: 13エリア`);
-    logger.log(`  - application_status: ${options.testData ? 'accepted' : 'not_applied'}`);
-    logger.log(`  - 出力先: ${filepath}`);
+    logger.log(`  - 配送元数: ${result.consignorCount}エリア`);
+    logger.log(`  - application_status: ${result.applicationStatus}`);
+    logger.log(`  - 出力先: ${result.filepath}`);
   } catch (error: any) {
     logger.error(`エラー: ${error.message}`);
     throw error;
@@ -55,17 +52,8 @@ export async function deployConsignor(options: DeployOptions): Promise<void> {
   try {
     logger.title('🚀 Plus Shipping 配送元データデプロイ');
 
-    // Shop設定を読み込み
-    const shopConfig = loadShopConfig(options.shop);
-    const envConfig = shopConfig.environments[options.env];
-
-    if (!envConfig) {
-      throw new Error(`環境 "${options.env}" が設定されていません`);
-    }
-
-    logger.info(`Shop: ${shopConfig.shopify_shop_id}`);
+    logger.info(`Shop: ${options.shop}`);
     logger.info(`環境: ${options.env}`);
-    logger.info(`Namespace: ${envConfig.namespace}`);
 
     // 確認
     if (!options.dryRun) {
@@ -84,74 +72,57 @@ export async function deployConsignor(options: DeployOptions): Promise<void> {
       }
     }
 
-    // Kubernetesコンテキストを切り替え
-    await k8s.switchContext(envConfig.context);
+    // Dry-runモードの場合
+    if (options.dryRun) {
+      logger.info('Dry-runモード: SQLを生成して表示します');
 
-    try {
-      // MySQLクライアントPodを確保
-      const podName = await k8s.ensureMySQLClientPod(envConfig.namespace);
-
-      // DB接続情報を取得
-      const dbCreds = await k8s.getDBCredentials(
-        envConfig.namespace,
-        envConfig.db_config_map,
-        envConfig.db_secret
-      );
-
-      logger.info(`DB: ${dbCreds.host}/${dbCreds.name}`);
-
-      // SQLを生成
-      const generator = new ConsignorSQLGenerator();
-      const sql = generator.generateInsertSQL(shopConfig, true); // テストデータモード
-
-      if (options.dryRun) {
-        logger.info('Dry-runモード: SQLを表示します');
-        console.log('\n' + sql);
-        logger.success('Dry-run完了');
-        return;
-      }
-
-      // SQLを実行
-      logger.startSpinner('SQLを実行中...');
-
-      await k8s.execSQL({
-        namespace: envConfig.namespace,
-        podName,
-        dbHost: dbCreds.host,
-        dbUser: dbCreds.user,
-        dbPassword: dbCreds.password,
-        dbName: dbCreds.name,
-        sql,
+      // SQL生成UseCaseを使用
+      const sqlUseCase = DIContainer.getGenerateConsignorSQLUseCase();
+      const sqlResult = await sqlUseCase.execute({
+        shopName: options.shop,
+        isTestData: true,
       });
 
-      logger.succeedSpinner('SQL実行完了');
+      logger.success('SQL生成完了（Dry-run）');
+      logger.info(`生成場所: ${sqlResult.filepath}`);
+      return;
+    }
 
-      // 確認クエリを実行
-      logger.section('📊 登録データを確認');
+    // 環境名をマッピング（tes/stg/prod -> staging/production）
+    const environmentMap: { [key: string]: 'staging' | 'production' } = {
+      'tes': 'staging',
+      'stg': 'staging',
+      'staging': 'staging',
+      'prod': 'production',
+      'prd': 'production',
+      'production': 'production',
+    };
 
-      const verifySQL = `
-        SELECT location_name, prefecture, application_status_yamato
-        FROM consignors
-        WHERE shopify_shop_id = '${shopConfig.shopify_shop_id}'
-        ORDER BY id;
-      `;
+    const mappedEnv = environmentMap[options.env];
+    if (!mappedEnv) {
+      throw new Error(`不明な環境: ${options.env}`);
+    }
 
-      const result = await k8s.execSQL({
-        namespace: envConfig.namespace,
-        podName,
-        dbHost: dbCreds.host,
-        dbUser: dbCreds.user,
-        dbPassword: dbCreds.password,
-        dbName: dbCreds.name,
-        sql: verifySQL,
-      });
+    // Use Caseを取得
+    const useCase = DIContainer.getDeployConsignorUseCase();
 
-      console.log(result);
+    // Use Caseを実行
+    logger.startSpinner('デプロイ中...');
 
-      logger.success('デプロイ完了！');
-    } finally {
-      // 元のコンテキストに戻す
-      await k8s.restoreContext();
+    const result = await useCase.execute({
+      shopName: options.shop,
+      environment: mappedEnv,
+      isTestData: true,
+      skipConfirmation: true,
+    });
+
+    if (result.success) {
+      logger.succeedSpinner('デプロイ完了');
+      logger.success(`${result.deployedCount}エリアの配送元データを登録しました`);
+    } else {
+      logger.failSpinner('デプロイ失敗');
+      logger.error(`エラー: ${result.errorMessage}`);
+      throw new Error(result.errorMessage);
     }
   } catch (error: any) {
     logger.error(`エラー: ${error.message}`);
@@ -166,16 +137,8 @@ export async function rollbackConsignor(options: DeployOptions): Promise<void> {
   try {
     logger.title('↩️  Plus Shipping 配送元データロールバック');
 
-    // Shop設定を読み込み
-    const shopConfig = loadShopConfig(options.shop);
-    const envConfig = shopConfig.environments[options.env];
-
-    if (!envConfig) {
-      throw new Error(`環境 "${options.env}" が設定されていません`);
-    }
-
     logger.warning('⚠️  13エリアの配送元データを削除します');
-    logger.info(`Shop: ${shopConfig.shopify_shop_id}`);
+    logger.info(`Shop: ${options.shop}`);
     logger.info(`環境: ${options.env}`);
 
     // 確認
@@ -193,42 +156,39 @@ export async function rollbackConsignor(options: DeployOptions): Promise<void> {
       return;
     }
 
-    // Kubernetesコンテキストを切り替え
-    await k8s.switchContext(envConfig.context);
+    // 環境名をマッピング（tes/stg/prod -> staging/production）
+    const environmentMap: { [key: string]: 'staging' | 'production' } = {
+      'tes': 'staging',
+      'stg': 'staging',
+      'staging': 'staging',
+      'prod': 'production',
+      'prd': 'production',
+      'production': 'production',
+    };
 
-    try {
-      // MySQLクライアントPodを確保
-      const podName = await k8s.ensureMySQLClientPod(envConfig.namespace);
+    const mappedEnv = environmentMap[options.env];
+    if (!mappedEnv) {
+      throw new Error(`不明な環境: ${options.env}`);
+    }
 
-      // DB接続情報を取得
-      const dbCreds = await k8s.getDBCredentials(
-        envConfig.namespace,
-        envConfig.db_config_map,
-        envConfig.db_secret
-      );
+    // Use Caseを取得（ConsignorRepositoryを直接使用）
+    const consignorRepo = DIContainer.getConsignorRepository();
 
-      // DELETE SQLを生成
-      const generator = new ConsignorSQLGenerator();
-      const sql = generator.generateDeleteSQL(shopConfig);
+    // ロールバックを実行
+    logger.startSpinner('削除中...');
 
-      // SQLを実行
-      logger.startSpinner('削除中...');
+    const result = await consignorRepo.rollback(
+      `${options.shop}.myshopify.com`,
+      mappedEnv
+    );
 
-      await k8s.execSQL({
-        namespace: envConfig.namespace,
-        podName,
-        dbHost: dbCreds.host,
-        dbUser: dbCreds.user,
-        dbPassword: dbCreds.password,
-        dbName: dbCreds.name,
-        sql,
-      });
-
+    if (result.success) {
       logger.succeedSpinner('削除完了');
-      logger.success('ロールバック完了！');
-    } finally {
-      // 元のコンテキストに戻す
-      await k8s.restoreContext();
+      logger.success(`ロールバック完了！（${result.deletedCount}件削除）`);
+    } else {
+      logger.failSpinner('削除失敗');
+      logger.error(`エラー: ${result.errorMessage}`);
+      throw new Error(result.errorMessage);
     }
   } catch (error: any) {
     logger.error(`エラー: ${error.message}`);
