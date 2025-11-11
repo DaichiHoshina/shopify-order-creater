@@ -32,7 +32,7 @@ const AREA_NAME_MAP: Record<string, string> = {
   'shikoku-to-tokyo': '四国',
   'kita-kyushu-to-tokyo': '北九州',
   'minami-kyushu-to-tokyo': '南九州',
-  'okinawa-to-tokyo': '沖縄'
+  'okinawa-to-tokyo': '沖縄',
 };
 
 // 13エリアのテンプレートファイル
@@ -60,7 +60,7 @@ async function createAllOrders() {
 
   const results = {
     succeeded: [] as string[],
-    failed: [] as string[]
+    failed: [] as string[],
   };
 
   for (let i = 0; i < ALL_TEMPLATE_FILES.length; i++) {
@@ -85,23 +85,20 @@ async function createAllOrders() {
       console.log(`   📋 商品名: ${template.order.line_items[0]?.title}`);
       console.log(`   📦 アイテム数: ${template.order.line_items[0]?.quantity}個`);
       console.log(`   🏷️  タグ: ${template.order.tags}`);
-      console.log(`   📍 配送先: ${template.order.shipping_address.province} ${template.order.shipping_address.city}`);
+      console.log(
+        `   📍 配送先: ${template.order.shipping_address.province} ${template.order.shipping_address.city}`
+      );
 
       // テンプレートデータをShopify API形式に変換
       const orderData = extractOrderData(template);
 
       // Shopify注文を作成
       console.log(`   🔄 Shopify注文を作成中...`);
-      const result = await createShopifyOrder(
-        SHOPIFY_STORE_URL!,
-        SHOPIFY_ACCESS_TOKEN!,
-        orderData
-      );
+      const result = await createShopifyOrder(SHOPIFY_STORE_URL!, SHOPIFY_ACCESS_TOKEN!, orderData);
 
       const orderId = result.data?.orderCreate?.order?.id || 'N/A';
       console.log(`   ✅ 成功: 注文ID ${orderId}`);
       results.succeeded.push(`${areaName} (${orderId})`);
-
     } catch (error) {
       console.error(`   ❌ 失敗: ${templateFile}`);
       if (error instanceof Error) {
@@ -109,7 +106,9 @@ async function createAllOrders() {
       }
       const fileKey = templateFile.replace('.json', '');
       const areaName = AREA_NAME_MAP[fileKey] || fileKey;
-      results.failed.push(`${areaName} - ${error instanceof Error ? error.message : String(error)}`);
+      results.failed.push(
+        `${areaName} - ${error instanceof Error ? error.message : String(error)}`
+      );
     }
 
     // API レート制限を考慮して10秒待機（最後の注文以外）
@@ -143,7 +142,7 @@ createAllOrders()
     console.log('✨ 処理が完了しました');
     process.exit(0);
   })
-  .catch((error) => {
+  .catch(error => {
     console.error('❌ エラーが発生しました:', error);
     process.exit(1);
   });

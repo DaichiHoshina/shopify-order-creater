@@ -28,55 +28,63 @@ describe('Location', () => {
     });
 
     it('should throw error if name does not include 配送センター', () => {
-      expect(() => Location.create({
-        area: 'hokkaido',
-        name: '北海道倉庫',
-        postalCode: PostalCode.from('060-8588'),
-        prefecture: Prefecture.from('北海道'),
-        city: '札幌市中央区',
-        address1: '北3条西6丁目',
-        address2: '',
-        phone: PhoneNumber.from('011-231-4111'),
-      })).toThrow('Location name must include 配送センター');
+      expect(() =>
+        Location.create({
+          area: 'hokkaido',
+          name: '北海道倉庫',
+          postalCode: PostalCode.from('060-8588'),
+          prefecture: Prefecture.from('北海道'),
+          city: '札幌市中央区',
+          address1: '北3条西6丁目',
+          address2: '',
+          phone: PhoneNumber.from('011-231-4111'),
+        })
+      ).toThrow('Location name must include 配送センター');
     });
 
     it('should throw error for empty name', () => {
-      expect(() => Location.create({
-        area: 'hokkaido',
-        name: '',
-        postalCode: PostalCode.from('060-8588'),
-        prefecture: Prefecture.from('北海道'),
-        city: '札幌市中央区',
-        address1: '北3条西6丁目',
-        address2: '',
-        phone: PhoneNumber.from('011-231-4111'),
-      })).toThrow('Location name must not be empty');
+      expect(() =>
+        Location.create({
+          area: 'hokkaido',
+          name: '',
+          postalCode: PostalCode.from('060-8588'),
+          prefecture: Prefecture.from('北海道'),
+          city: '札幌市中央区',
+          address1: '北3条西6丁目',
+          address2: '',
+          phone: PhoneNumber.from('011-231-4111'),
+        })
+      ).toThrow('Location name must not be empty');
     });
 
     it('should throw error for empty city', () => {
-      expect(() => Location.create({
-        area: 'hokkaido',
-        name: '北海道配送センター',
-        postalCode: PostalCode.from('060-8588'),
-        prefecture: Prefecture.from('北海道'),
-        city: '',
-        address1: '北3条西6丁目',
-        address2: '',
-        phone: PhoneNumber.from('011-231-4111'),
-      })).toThrow('City must not be empty');
+      expect(() =>
+        Location.create({
+          area: 'hokkaido',
+          name: '北海道配送センター',
+          postalCode: PostalCode.from('060-8588'),
+          prefecture: Prefecture.from('北海道'),
+          city: '',
+          address1: '北3条西6丁目',
+          address2: '',
+          phone: PhoneNumber.from('011-231-4111'),
+        })
+      ).toThrow('City must not be empty');
     });
 
     it('should throw error for empty address1', () => {
-      expect(() => Location.create({
-        area: 'hokkaido',
-        name: '北海道配送センター',
-        postalCode: PostalCode.from('060-8588'),
-        prefecture: Prefecture.from('北海道'),
-        city: '札幌市中央区',
-        address1: '',
-        address2: '',
-        phone: PhoneNumber.from('011-231-4111'),
-      })).toThrow('Address1 must not be empty');
+      expect(() =>
+        Location.create({
+          area: 'hokkaido',
+          name: '北海道配送センター',
+          postalCode: PostalCode.from('060-8588'),
+          prefecture: Prefecture.from('北海道'),
+          city: '札幌市中央区',
+          address1: '',
+          address2: '',
+          phone: PhoneNumber.from('011-231-4111'),
+        })
+      ).toThrow('Address1 must not be empty');
     });
 
     it('should allow empty address2', () => {

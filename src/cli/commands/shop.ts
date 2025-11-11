@@ -48,7 +48,6 @@ export async function showShopInfo(options: ShopInfoOptions): Promise<void> {
         logger.log(`  日本郵便 Detail ID: ${shopConfig.credentials.japan_post_detail_id}`);
       }
     }
-
   } catch (error: any) {
     logger.error(`エラー: ${error.message}`);
     throw error;

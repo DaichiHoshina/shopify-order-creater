@@ -15,7 +15,9 @@ const SHOPIFY_STORE_URL = process.env.SHOPIFY_STORE_URL;
 const SHOPIFY_ACCESS_TOKEN = process.env.SHOPIFY_ACCESS_TOKEN;
 
 if (!SHOPIFY_STORE_URL || !SHOPIFY_ACCESS_TOKEN) {
-  console.error('❌ エラー: .env ファイルに SHOPIFY_STORE_URL と SHOPIFY_ACCESS_TOKEN を設定してください');
+  console.error(
+    '❌ エラー: .env ファイルに SHOPIFY_STORE_URL と SHOPIFY_ACCESS_TOKEN を設定してください'
+  );
   process.exit(1);
 }
 
@@ -107,7 +109,9 @@ async function createLocation(
     const { locationAdd } = response.data.data;
 
     if (locationAdd.userErrors && locationAdd.userErrors.length > 0) {
-      const errorMessages = locationAdd.userErrors.map((e: any) => `${e.message} (${e.field})`).join(', ');
+      const errorMessages = locationAdd.userErrors
+        .map((e: any) => `${e.message} (${e.field})`)
+        .join(', ');
       throw new Error(`Shopify validation errors: ${errorMessages}`);
     }
 
@@ -115,7 +119,9 @@ async function createLocation(
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error('   ❌ Axios Error:', error.response?.data || error.message);
-      throw new Error(`Failed to create location: ${error.response?.data?.errors || error.message}`);
+      throw new Error(
+        `Failed to create location: ${error.response?.data?.errors || error.message}`
+      );
     }
     throw error;
   }
@@ -124,10 +130,7 @@ async function createLocation(
 /**
  * 既存のLocationを取得（GraphQL）
  */
-async function getExistingLocations(
-  storeUrl: string,
-  accessToken: string
-): Promise<any[]> {
+async function getExistingLocations(storeUrl: string, accessToken: string): Promise<any[]> {
   const domain = storeUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
   const apiUrl = `https://${domain}/admin/api/2024-10/graphql.json`;
 
@@ -190,7 +193,7 @@ async function main() {
 
   if (existingLocations.length > 0) {
     console.log('   既存のLocation一覧:');
-    existingLocations.forEach((loc) => {
+    existingLocations.forEach(loc => {
       console.log(`   - ${loc.name} (ID: ${loc.id})`);
     });
     console.log('\n');
@@ -210,7 +213,7 @@ async function main() {
     console.log(`\n[${i + 1}/${locationsData.length}] 📦 ${locationData.area} を処理中...`);
 
     // 既に同じ名前のLocationが存在するかチェック
-    const existing = existingLocations.find((loc) => loc.name === locationData.name);
+    const existing = existingLocations.find(loc => loc.name === locationData.name);
     if (existing) {
       console.log(`   ⏭️  スキップ: 既に存在します (ID: ${existing.id})`);
       results.push({
@@ -224,7 +227,11 @@ async function main() {
     }
 
     try {
-      const location = await createLocation(SHOPIFY_STORE_URL!, SHOPIFY_ACCESS_TOKEN!, locationData);
+      const location = await createLocation(
+        SHOPIFY_STORE_URL!,
+        SHOPIFY_ACCESS_TOKEN!,
+        locationData
+      );
       console.log(`   ✅ 成功！Location ID: ${location.id}`);
 
       results.push({
@@ -239,7 +246,7 @@ async function main() {
       // API レート制限を考慮して3秒待機
       if (i < locationsData.length - 1) {
         console.log(`   ⏳ 3秒待機中...`);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
+        await new Promise(resolve => setTimeout(resolve, 3000));
       }
     } catch (error) {
       console.error(`   ❌ 失敗: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -256,7 +263,7 @@ async function main() {
       // エラーが発生しても3秒待機
       if (i < locationsData.length - 1) {
         console.log(`   ⏳ 3秒待機中...`);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
+        await new Promise(resolve => setTimeout(resolve, 3000));
       }
     }
   }
@@ -275,15 +282,15 @@ async function main() {
     const detail = result.skipped
       ? `既存 Location ID: ${result.locationId}`
       : result.success
-      ? `Location ID: ${result.locationId}`
-      : `Error: ${result.error}`;
+        ? `Location ID: ${result.locationId}`
+        : `Error: ${result.error}`;
     console.log(`${status} [${index + 1}] ${result.name}`);
     console.log(`   ${detail}\n`);
   });
 
   // Location IDマッピングをJSON出力
   const locationMapping: { [key: string]: string } = {};
-  results.forEach((result) => {
+  results.forEach(result => {
     if (result.success || result.skipped) {
       locationMapping[result.area] = result.locationId;
     }
@@ -301,7 +308,7 @@ async function main() {
 }
 
 // スクリプトを実行
-main().catch((error) => {
+main().catch(error => {
   console.error('❌ 予期しないエラーが発生しました:', error);
   process.exit(1);
 });

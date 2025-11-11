@@ -90,12 +90,12 @@ export async function deployConsignor(options: DeployOptions): Promise<void> {
 
     // 環境名をマッピング（tes/stg/prod -> staging/production）
     const environmentMap: { [key: string]: 'staging' | 'production' } = {
-      'tes': 'staging',
-      'stg': 'staging',
-      'staging': 'staging',
-      'prod': 'production',
-      'prd': 'production',
-      'production': 'production',
+      tes: 'staging',
+      stg: 'staging',
+      staging: 'staging',
+      prod: 'production',
+      prd: 'production',
+      production: 'production',
     };
 
     const mappedEnv = environmentMap[options.env];
@@ -158,12 +158,12 @@ export async function rollbackConsignor(options: DeployOptions): Promise<void> {
 
     // 環境名をマッピング（tes/stg/prod -> staging/production）
     const environmentMap: { [key: string]: 'staging' | 'production' } = {
-      'tes': 'staging',
-      'stg': 'staging',
-      'staging': 'staging',
-      'prod': 'production',
-      'prd': 'production',
-      'production': 'production',
+      tes: 'staging',
+      stg: 'staging',
+      staging: 'staging',
+      prod: 'production',
+      prd: 'production',
+      production: 'production',
     };
 
     const mappedEnv = environmentMap[options.env];
@@ -177,10 +177,7 @@ export async function rollbackConsignor(options: DeployOptions): Promise<void> {
     // ロールバックを実行
     logger.startSpinner('削除中...');
 
-    const result = await consignorRepo.rollback(
-      `${options.shop}.myshopify.com`,
-      mappedEnv
-    );
+    const result = await consignorRepo.rollback(`${options.shop}.myshopify.com`, mappedEnv);
 
     if (result.success) {
       logger.succeedSpinner('削除完了');

@@ -30,7 +30,9 @@ export class PostalCode {
     if (input.includes('-')) {
       // 正しい形式: 123-4567
       if (!/^\d{3}-\d{4}$/.test(input)) {
-        throw new Error('Invalid postal code format: hyphen must be at position 3 (format: 123-4567)');
+        throw new Error(
+          'Invalid postal code format: hyphen must be at position 3 (format: 123-4567)'
+        );
       }
       digitsOnly = input.replace('-', '');
     } else {

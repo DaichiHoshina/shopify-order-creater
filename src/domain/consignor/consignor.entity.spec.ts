@@ -24,8 +24,8 @@ describe('Consignor Entity', () => {
       credentials: {
         sagawaDetailId: 556,
         yamatoDetailId: 528,
-        japanPostDetailId: 0
-      }
+        japanPostDetailId: 0,
+      },
     });
 
     testLocation = Location.create({
@@ -36,7 +36,7 @@ describe('Consignor Entity', () => {
       city: '札幌市中央区',
       address1: '北3条西6丁目',
       address2: '',
-      phone: PhoneNumber.from('011-231-4111')
+      phone: PhoneNumber.from('011-231-4111'),
     });
   });
 
@@ -97,8 +97,8 @@ describe('Consignor Entity', () => {
         credentials: {
           sagawaDetailId: 0,
           yamatoDetailId: 0,
-          japanPostDetailId: 0
-        }
+          japanPostDetailId: 0,
+        },
       });
 
       const consignor = Consignor.createTestData(shopWithoutCreds, testLocation);
@@ -143,7 +143,7 @@ describe('Consignor Entity', () => {
         city: '札幌市中央区',
         address1: '北3条西6丁目',
         address2: 'テストビル3F',
-        phone: PhoneNumber.from('011-231-4111')
+        phone: PhoneNumber.from('011-231-4111'),
       });
 
       const consignor = Consignor.createTestData(testShop, locationWithBuilding);

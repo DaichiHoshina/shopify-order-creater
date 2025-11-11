@@ -31,9 +31,12 @@ consignorCommand
   .command('generate')
   .description('配送元SQL生成（13エリア）')
   .requiredOption('-s, --shop <shop>', 'Shop名（config/shops.yamlで定義）')
-  .option('-t, --test-data', 'テストデータモード（application_status: accepted、既存detail_id使用）')
+  .option(
+    '-t, --test-data',
+    'テストデータモード（application_status: accepted、既存detail_id使用）'
+  )
   .option('-o, --output <dir>', '出力ディレクトリ')
-  .action(async (options) => {
+  .action(async options => {
     try {
       await generateConsignorSQL(options);
     } catch (error: any) {
@@ -49,7 +52,7 @@ consignorCommand
   .requiredOption('-s, --shop <shop>', 'Shop名')
   .requiredOption('-e, --env <env>', '環境名（tes, stg, prd等）')
   .option('--dry-run', 'Dry-runモード（SQLのみ表示）')
-  .action(async (options) => {
+  .action(async options => {
     try {
       await deployConsignor(options);
     } catch (error: any) {
@@ -64,7 +67,7 @@ consignorCommand
   .description('配送元データをロールバック（削除）')
   .requiredOption('-s, --shop <shop>', 'Shop名')
   .requiredOption('-e, --env <env>', '環境名')
-  .action(async (options) => {
+  .action(async options => {
     try {
       await rollbackConsignor(options);
     } catch (error: any) {
@@ -81,10 +84,13 @@ program
   .command('order-create')
   .description('Shopify注文を一括作成（13エリア対応）')
   .requiredOption('-s, --shop <shop>', 'Shop名')
-  .option('-t, --access-token <token>', 'Shopifyアクセストークン（環境変数 SHOPIFY_ACCESS_TOKEN でも設定可）')
+  .option(
+    '-t, --access-token <token>',
+    'Shopifyアクセストークン（環境変数 SHOPIFY_ACCESS_TOKEN でも設定可）'
+  )
   .option('-a, --areas <areas...>', '作成するエリア（例: hokkaido-to-tokyo kanto-to-tokyo）')
   .option('--dry-run', 'Dry-runモード（実際には注文を作成しない）')
-  .action(async (options) => {
+  .action(async options => {
     try {
       await createOrders(options);
     } catch (error: any) {
@@ -104,7 +110,7 @@ program
     try {
       logger.title('📋 利用可能なShop一覧');
       const shops = listShops();
-      shops.forEach((shop) => {
+      shops.forEach(shop => {
         console.log(`  - ${shop}`);
       });
     } catch (error: any) {
@@ -117,7 +123,7 @@ program
   .command('shop-info')
   .description('Shop詳細情報を表示')
   .requiredOption('-s, --shop <shop>', 'Shop名')
-  .action(async (options) => {
+  .action(async options => {
     try {
       await showShopInfo(options);
     } catch (error: any) {

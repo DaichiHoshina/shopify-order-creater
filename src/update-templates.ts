@@ -15,7 +15,7 @@ const UNIFIED_CONSIGNOR = {
   zip: '135-0061',
   prefecture: '東京都',
   city: '江東区',
-  address: '豊洲３丁目３−３ 豊洲センタービル'
+  address: '豊洲３丁目３−３ 豊洲センタービル',
 };
 
 // locations.jsonから住所データを読み込み
@@ -24,53 +24,53 @@ const locationsData = JSON.parse(fs.readFileSync(locationsPath, 'utf-8'));
 
 // エリア名マッピング
 const AREA_NAME_MAP: Record<string, string> = {
-  'hokkaido': '北海道',
+  hokkaido: '北海道',
   'kita-tohoku': '北東北',
   'minami-tohoku': '南東北',
-  'kanto': '関東',
-  'shinetsu': '信越',
-  'hokuriku': '北陸',
-  'chubu': '中部',
-  'kansai': '関西',
-  'chugoku': '中国',
-  'shikoku': '四国',
+  kanto: '関東',
+  shinetsu: '信越',
+  hokuriku: '北陸',
+  chubu: '中部',
+  kansai: '関西',
+  chugoku: '中国',
+  shikoku: '四国',
   'kita-kyushu': '北九州',
   'minami-kyushu': '南九州',
-  'okinawa': '沖縄'
+  okinawa: '沖縄',
 };
 
 // ファイル名マッピング
 const FILE_NAME_MAP: Record<string, string> = {
-  'hokkaido': 'hokkaido-to-tokyo.json',
+  hokkaido: 'hokkaido-to-tokyo.json',
   'kita-tohoku': 'kita-tohoku-to-tokyo.json',
   'minami-tohoku': 'minami-tohoku-to-tokyo.json',
-  'kanto': 'kanto-to-tokyo.json',
-  'shinetsu': 'shinetsu-to-tokyo.json',
-  'hokuriku': 'hokuriku-to-tokyo.json',
-  'chubu': 'chubu-to-tokyo.json',
-  'kansai': 'kansai-to-tokyo.json',
-  'chugoku': 'chugoku-to-tokyo.json',
-  'shikoku': 'shikoku-to-tokyo.json',
+  kanto: 'kanto-to-tokyo.json',
+  shinetsu: 'shinetsu-to-tokyo.json',
+  hokuriku: 'hokuriku-to-tokyo.json',
+  chubu: 'chubu-to-tokyo.json',
+  kansai: 'kansai-to-tokyo.json',
+  chugoku: 'chugoku-to-tokyo.json',
+  shikoku: 'shikoku-to-tokyo.json',
   'kita-kyushu': 'kita-kyushu-to-tokyo.json',
   'minami-kyushu': 'minami-kyushu-to-tokyo.json',
-  'okinawa': 'okinawa-to-tokyo.json',
+  okinawa: 'okinawa-to-tokyo.json',
 };
 
 // エリアコードマッピング
 const AREA_CODE_MAP: Record<string, string> = {
-  'hokkaido': '01',
+  hokkaido: '01',
   'kita-tohoku': '02',
   'minami-tohoku': '03',
-  'kanto': '04',
-  'shinetsu': '05',
-  'hokuriku': '06',
-  'chubu': '07',
-  'kansai': '08',
-  'chugoku': '09',
-  'shikoku': '10',
+  kanto: '04',
+  shinetsu: '05',
+  hokuriku: '06',
+  chubu: '07',
+  kansai: '08',
+  chugoku: '09',
+  shikoku: '10',
   'kita-kyushu': '11',
   'minami-kyushu': '12',
-  'okinawa': '13',
+  okinawa: '13',
 };
 
 interface LocationData {
@@ -93,13 +93,7 @@ async function updateTemplate(locationData: LocationData) {
   const areaCode = AREA_CODE_MAP[area];
   const areaTag = `配送先:${areaName}`;
 
-  const templatePath = path.join(
-    __dirname,
-    '..',
-    'test-scenarios',
-    'consignor-area',
-    filename
-  );
+  const templatePath = path.join(__dirname, '..', 'test-scenarios', 'consignor-area', filename);
 
   console.log(`\n📝 ${filename} を更新中...`);
 
@@ -151,7 +145,9 @@ async function updateTemplate(locationData: LocationData) {
   // ファイルに保存
   fs.writeFileSync(templatePath, JSON.stringify(templateData, null, 2));
   console.log(`   ✅ 更新完了`);
-  console.log(`   - 配送元: ${UNIFIED_CONSIGNOR.prefecture} ${UNIFIED_CONSIGNOR.city}（Plus shippingで設定）`);
+  console.log(
+    `   - 配送元: ${UNIFIED_CONSIGNOR.prefecture} ${UNIFIED_CONSIGNOR.city}（Plus shippingで設定）`
+  );
   console.log(`   - 配送先: ${locationData.province} ${locationData.city}`);
   console.log(`   - 住所1: ${locationData.address1}`);
   console.log(`   - 個数: 100個`);
@@ -174,7 +170,7 @@ async function main() {
 }
 
 // スクリプトを実行
-main().catch((error) => {
+main().catch(error => {
   console.error('❌ 予期しないエラーが発生しました:', error);
   process.exit(1);
 });

@@ -101,7 +101,7 @@ describe('FileSystemSQLRepository', () => {
 
     it('should save SQL with UTF-8 encoding', async () => {
       // Arrange
-      const sql = 'INSERT INTO consignors (name) VALUES (\'配送センター\');';
+      const sql = "INSERT INTO consignors (name) VALUES ('配送センター');";
       const filename = 'test-utf8.sql';
 
       // Act

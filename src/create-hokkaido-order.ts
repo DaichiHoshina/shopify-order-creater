@@ -35,7 +35,9 @@ async function createHokkaidoOrder() {
     console.log(`   - 商品名: ${template.order.line_items[0]?.title}`);
     console.log(`   - アイテム数: ${template.order.line_items[0]?.quantity}個`);
     console.log(`   - タグ: ${template.order.tags}`);
-    console.log(`   - 配送先: ${template.order.shipping_address.province} ${template.order.shipping_address.city}`);
+    console.log(
+      `   - 配送先: ${template.order.shipping_address.province} ${template.order.shipping_address.city}`
+    );
     console.log(`   - 住所1: ${template.order.shipping_address.address1}`);
     console.log(`   - 郵便番号: ${template.order.shipping_address.zip}\n`);
 
@@ -44,15 +46,10 @@ async function createHokkaidoOrder() {
 
     // Shopify注文を作成
     console.log('🔄 Shopify注文を作成中...');
-    const result = await createShopifyOrder(
-      SHOPIFY_STORE_URL!,
-      SHOPIFY_ACCESS_TOKEN!,
-      orderData
-    );
+    const result = await createShopifyOrder(SHOPIFY_STORE_URL!, SHOPIFY_ACCESS_TOKEN!, orderData);
 
     const orderId = result.data?.orderCreate?.order?.id || 'N/A';
     console.log(`\n✅ 成功！注文ID: ${orderId}\n`);
-
   } catch (error) {
     console.error(`\n❌ 失敗しました`);
     if (error instanceof Error) {
@@ -68,7 +65,7 @@ createHokkaidoOrder()
     console.log('✨ 北海道の注文作成完了');
     process.exit(0);
   })
-  .catch((error) => {
+  .catch(error => {
     console.error('❌ エラーが発生しました:', error);
     process.exit(1);
   });

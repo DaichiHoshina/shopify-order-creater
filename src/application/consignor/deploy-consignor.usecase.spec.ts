@@ -32,8 +32,8 @@ describe('DeployConsignorUseCase', () => {
       credentials: {
         sagawaDetailId: 556,
         yamatoDetailId: 528,
-        japanPostDetailId: 0
-      }
+        japanPostDetailId: 0,
+      },
     });
 
     testLocations = [
@@ -45,7 +45,7 @@ describe('DeployConsignorUseCase', () => {
         city: '札幌市中央区',
         address1: '北3条西6丁目',
         address2: '',
-        phone: PhoneNumber.from('011-231-4111')
+        phone: PhoneNumber.from('011-231-4111'),
       }),
       Location.create({
         area: 'kanto',
@@ -55,8 +55,8 @@ describe('DeployConsignorUseCase', () => {
         city: '新宿区',
         address1: '西新宿2-8-1',
         address2: '',
-        phone: PhoneNumber.from('03-5321-1111')
-      })
+        phone: PhoneNumber.from('03-5321-1111'),
+      }),
     ];
 
     // モック作成
@@ -75,11 +75,7 @@ describe('DeployConsignorUseCase', () => {
       rollback: jest.fn(),
     };
 
-    useCase = new DeployConsignorUseCase(
-      mockShopRepo,
-      mockLocationRepo,
-      mockConsignorRepo
-    );
+    useCase = new DeployConsignorUseCase(mockShopRepo, mockLocationRepo, mockConsignorRepo);
   });
 
   describe('execute', () => {
@@ -109,10 +105,7 @@ describe('DeployConsignorUseCase', () => {
       // リポジトリが正しく呼ばれたか確認
       expect(mockShopRepo.findByName).toHaveBeenCalledWith('81-test-store-plan-silver');
       expect(mockLocationRepo.findAll).toHaveBeenCalled();
-      expect(mockConsignorRepo.deploy).toHaveBeenCalledWith(
-        expect.any(Array),
-        'staging'
-      );
+      expect(mockConsignorRepo.deploy).toHaveBeenCalledWith(expect.any(Array), 'staging');
 
       // デプロイされたConsignorの数を確認
       const deployCall = mockConsignorRepo.deploy.mock.calls[0];
@@ -141,10 +134,7 @@ describe('DeployConsignorUseCase', () => {
       expect(result.deployedCount).toBe(2);
       expect(result.environment).toBe('production');
 
-      expect(mockConsignorRepo.deploy).toHaveBeenCalledWith(
-        expect.any(Array),
-        'production'
-      );
+      expect(mockConsignorRepo.deploy).toHaveBeenCalledWith(expect.any(Array), 'production');
     });
 
     it('should return error when deploy fails', async () => {
@@ -176,12 +166,14 @@ describe('DeployConsignorUseCase', () => {
       mockShopRepo.findByName.mockRejectedValue(new Error('Shop not found'));
 
       // Act & Assert
-      await expect(useCase.execute({
-        shopName: 'non-existent-shop',
-        environment: 'staging',
-        isTestData: true,
-        skipConfirmation: true,
-      })).rejects.toThrow('Shop not found');
+      await expect(
+        useCase.execute({
+          shopName: 'non-existent-shop',
+          environment: 'staging',
+          isTestData: true,
+          skipConfirmation: true,
+        })
+      ).rejects.toThrow('Shop not found');
     });
 
     it('should create consignors for all locations', async () => {

@@ -61,7 +61,7 @@ export class Consignor {
       ApplicationStatus.notApplied(),
       0, // sagawa
       0, // yamato
-      0  // japan_post
+      0 // japan_post
     );
   }
 
@@ -79,9 +79,7 @@ export class Consignor {
       return false;
     }
 
-    return this.sagawaDetailId > 0 ||
-           this.yamatoDetailId > 0 ||
-           this.japanPostDetailId > 0;
+    return this.sagawaDetailId > 0 || this.yamatoDetailId > 0 || this.japanPostDetailId > 0;
   }
 
   /**

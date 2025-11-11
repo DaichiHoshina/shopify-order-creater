@@ -71,7 +71,7 @@ export class JsonLocationRepository implements ILocationRepository {
         city: item.city,
         address1: item.address1,
         address2: item.address2,
-        phone: PhoneNumber.from(item.phone)
+        phone: PhoneNumber.from(item.phone),
       });
     });
   }

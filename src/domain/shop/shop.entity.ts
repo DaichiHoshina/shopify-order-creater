@@ -57,12 +57,7 @@ export class Shop {
       throw new Error('Store ID must be a positive number');
     }
 
-    return new Shop(
-      props.shopifyShopId,
-      props.storeId,
-      props.environments,
-      props.credentials
-    );
+    return new Shop(props.shopifyShopId, props.storeId, props.environments, props.credentials);
   }
 
   /**
@@ -112,8 +107,10 @@ export class Shop {
    * いずれかの配送業者のdetail_idが設定されていればtrue
    */
   hasTestCredentials(): boolean {
-    return this.credentials.sagawaDetailId > 0 ||
-           this.credentials.yamatoDetailId > 0 ||
-           this.credentials.japanPostDetailId > 0;
+    return (
+      this.credentials.sagawaDetailId > 0 ||
+      this.credentials.yamatoDetailId > 0 ||
+      this.credentials.japanPostDetailId > 0
+    );
   }
 }

@@ -17,7 +17,7 @@ import { ISQLFileRepository } from '../../domain/consignor/sql-file.repository';
 import { Consignor } from '../../domain/consignor/consignor.entity';
 import {
   GenerateConsignorSQLInput,
-  GenerateConsignorSQLOutput
+  GenerateConsignorSQLOutput,
 } from './generate-consignor-sql.dto';
 
 export class GenerateConsignorSQLUseCase {
@@ -46,21 +46,15 @@ export class GenerateConsignorSQLUseCase {
     const sql = this.generateHeader(shop, input.isTestData) + sqlStatements.join('\n\n');
 
     // 5. ファイルに保存
-    const filename = input.isTestData
-      ? 'insert_test_consignors.sql'
-      : 'insert_consignors.sql';
+    const filename = input.isTestData ? 'insert_test_consignors.sql' : 'insert_consignors.sql';
 
-    const filepath = await this.sqlFileRepository.save(
-      sql,
-      filename,
-      input.outputDir
-    );
+    const filepath = await this.sqlFileRepository.save(sql, filename, input.outputDir);
 
     // 6. 結果を返す
     return {
       filepath,
       consignorCount: consignors.length,
-      applicationStatus: input.isTestData ? 'accepted' : 'not_applied'
+      applicationStatus: input.isTestData ? 'accepted' : 'not_applied',
     };
   }
 

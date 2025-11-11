@@ -158,7 +158,7 @@ async function main() {
   console.log('\n✨ SQL生成が完了しました！');
 }
 
-main().catch((error) => {
+main().catch(error => {
   console.error('エラーが発生しました:', error);
   process.exit(1);
 });

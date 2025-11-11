@@ -33,8 +33,10 @@ export class ConsignorSQLGenerator {
 
     sql += `\n`;
 
-    const sagawaDetailId = testData && credentials?.sagawa_detail_id ? credentials.sagawa_detail_id : 0;
-    const yamatoDetailId = testData && credentials?.yamato_detail_id ? credentials.yamato_detail_id : 0;
+    const sagawaDetailId =
+      testData && credentials?.sagawa_detail_id ? credentials.sagawa_detail_id : 0;
+    const yamatoDetailId =
+      testData && credentials?.yamato_detail_id ? credentials.yamato_detail_id : 0;
     const japanPostDetailId =
       testData && credentials?.japan_post_detail_id ? credentials.japan_post_detail_id : 0;
 

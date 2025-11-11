@@ -37,22 +37,19 @@ async function retryFailedOrder() {
     console.log(`   - 商品名: ${template.order.line_items[0]?.title}`);
     console.log(`   - アイテム数: ${template.order.line_items[0]?.quantity}個`);
     console.log(`   - タグ: ${template.order.tags}`);
-    console.log(`   - 配送先: ${template.order.shipping_address.province} ${template.order.shipping_address.city}\n`);
+    console.log(
+      `   - 配送先: ${template.order.shipping_address.province} ${template.order.shipping_address.city}\n`
+    );
 
     // テンプレートデータをShopify API形式に変換
     const orderData = extractOrderData(template);
 
     // Shopify注文を作成
     console.log('🔄 Shopify注文を作成中...');
-    const result = await createShopifyOrder(
-      SHOPIFY_STORE_URL!,
-      SHOPIFY_ACCESS_TOKEN!,
-      orderData
-    );
+    const result = await createShopifyOrder(SHOPIFY_STORE_URL!, SHOPIFY_ACCESS_TOKEN!, orderData);
 
     const orderId = result.data?.orderCreate?.order?.id || 'N/A';
     console.log(`\n✅ 成功！注文ID: ${orderId}\n`);
-
   } catch (error) {
     console.error(`\n❌ 失敗しました`);
     if (error instanceof Error) {
@@ -68,7 +65,7 @@ retryFailedOrder()
     console.log('✨ 再実行完了');
     process.exit(0);
   })
-  .catch((error) => {
+  .catch(error => {
     console.error('❌ エラーが発生しました:', error);
     process.exit(1);
   });

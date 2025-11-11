@@ -89,8 +89,8 @@ export class PhoneNumber {
    * 携帯電話番号かどうかを判定
    */
   isMobile(): boolean {
-    return this.value.startsWith('070') ||
-           this.value.startsWith('080') ||
-           this.value.startsWith('090');
+    return (
+      this.value.startsWith('070') || this.value.startsWith('080') || this.value.startsWith('090')
+    );
   }
 }

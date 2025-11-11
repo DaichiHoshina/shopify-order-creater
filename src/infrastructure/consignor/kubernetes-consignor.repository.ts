@@ -4,7 +4,11 @@
  * Kubernetes経由でConsignorデータをDBにデプロイするRepository実装
  */
 
-import { IConsignorRepository, DeployResult, RollbackResult } from '../../domain/consignor/consignor.repository';
+import {
+  IConsignorRepository,
+  DeployResult,
+  RollbackResult,
+} from '../../domain/consignor/consignor.repository';
 import { Consignor } from '../../domain/consignor/consignor.entity';
 import { IShopRepository } from '../../domain/shop/shop.repository';
 import { KubernetesClient } from '../../cli/utils/kubernetes';

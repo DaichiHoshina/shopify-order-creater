@@ -30,7 +30,9 @@ describe('ShopifyShopId', () => {
     });
 
     it('should throw error for invalid characters', () => {
-      expect(() => ShopifyShopId.from('invalid_store.myshopify.com')).toThrow('Invalid Shopify Shop ID');
+      expect(() => ShopifyShopId.from('invalid_store.myshopify.com')).toThrow(
+        'Invalid Shopify Shop ID'
+      );
     });
 
     it('should allow numbers in shop name', () => {

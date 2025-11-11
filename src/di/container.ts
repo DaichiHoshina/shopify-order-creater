@@ -67,10 +67,7 @@ export class DIContainer {
    */
   static getConsignorRepository(): IConsignorRepository {
     if (!this.consignorRepository) {
-      this.consignorRepository = new KubernetesConsignorRepository(
-        k8s,
-        this.getShopRepository()
-      );
+      this.consignorRepository = new KubernetesConsignorRepository(k8s, this.getShopRepository());
     }
     return this.consignorRepository;
   }

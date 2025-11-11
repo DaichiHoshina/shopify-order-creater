@@ -32,8 +32,8 @@ describe('GenerateConsignorSQLUseCase', () => {
       credentials: {
         sagawaDetailId: 556,
         yamatoDetailId: 528,
-        japanPostDetailId: 0
-      }
+        japanPostDetailId: 0,
+      },
     });
 
     testLocations = [
@@ -45,7 +45,7 @@ describe('GenerateConsignorSQLUseCase', () => {
         city: '札幌市中央区',
         address1: '北3条西6丁目',
         address2: '',
-        phone: PhoneNumber.from('011-231-4111')
+        phone: PhoneNumber.from('011-231-4111'),
       }),
       Location.create({
         area: 'kanto',
@@ -55,8 +55,8 @@ describe('GenerateConsignorSQLUseCase', () => {
         city: '新宿区',
         address1: '西新宿2-8-1',
         address2: '',
-        phone: PhoneNumber.from('03-5321-1111')
-      })
+        phone: PhoneNumber.from('03-5321-1111'),
+      }),
     ];
 
     // モック作成
@@ -74,11 +74,7 @@ describe('GenerateConsignorSQLUseCase', () => {
       save: jest.fn(),
     };
 
-    useCase = new GenerateConsignorSQLUseCase(
-      mockShopRepo,
-      mockLocationRepo,
-      mockSQLFileRepo
-    );
+    useCase = new GenerateConsignorSQLUseCase(mockShopRepo, mockLocationRepo, mockSQLFileRepo);
   });
 
   describe('execute', () => {
@@ -159,10 +155,12 @@ describe('GenerateConsignorSQLUseCase', () => {
       mockShopRepo.findByName.mockRejectedValue(new Error('Shop not found'));
 
       // Act & Assert
-      await expect(useCase.execute({
-        shopName: 'non-existent-shop',
-        isTestData: true,
-      })).rejects.toThrow('Shop not found');
+      await expect(
+        useCase.execute({
+          shopName: 'non-existent-shop',
+          isTestData: true,
+        })
+      ).rejects.toThrow('Shop not found');
     });
 
     it('should generate SQL for all locations', async () => {

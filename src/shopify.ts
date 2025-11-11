@@ -121,7 +121,7 @@ export async function createShopifyOrder(
   orderData: OrderCreateInput = DEFAULT_ORDER
 ): Promise<OrderCreateResponse> {
   const apiUrl = buildShopifyApiUrl(shopifyStoreUrl);
-  
+
   console.log(`\n📦 Creating Shopify order...`);
   console.log(`   Store: ${shopifyStoreUrl}`);
   console.log(`   API URL: ${apiUrl}`);
@@ -163,16 +163,18 @@ export async function createShopifyOrder(
     // エラーチェック
     if (response.data.data.orderCreate.userErrors.length > 0) {
       console.error('❌ Shopify API returned errors:');
-      response.data.data.orderCreate.userErrors.forEach((error) => {
+      response.data.data.orderCreate.userErrors.forEach(error => {
         const fieldPath = error.field ? error.field.join('.') : 'N/A';
         console.error(`   - ${error.message} (${fieldPath})`);
       });
 
       // エラーメッセージを詳細に返す
-      const errorMessages = response.data.data.orderCreate.userErrors.map((error) => {
-        const fieldPath = error.field ? error.field.join('.') : 'N/A';
-        return `${error.message} (${fieldPath})`;
-      }).join(', ');
+      const errorMessages = response.data.data.orderCreate.userErrors
+        .map(error => {
+          const fieldPath = error.field ? error.field.join('.') : 'N/A';
+          return `${error.message} (${fieldPath})`;
+        })
+        .join(', ');
 
       throw new Error(`Shopify validation errors: ${errorMessages}`);
     }
@@ -181,7 +183,9 @@ export async function createShopifyOrder(
     console.log('✅ Order created successfully!');
     console.log(`   Order ID: ${order.id}`);
     console.log(`   Phone: ${order.phone}`);
-    console.log(`   Total Tax: ${order.totalTaxSet.shopMoney.amount} ${order.totalTaxSet.shopMoney.currencyCode}`);
+    console.log(
+      `   Total Tax: ${order.totalTaxSet.shopMoney.amount} ${order.totalTaxSet.shopMoney.currencyCode}`
+    );
     console.log(`   Line Items: ${order.lineItems.nodes.length}`);
 
     return response.data;
@@ -189,7 +193,7 @@ export async function createShopifyOrder(
     if (axios.isAxiosError(error)) {
       const axiosError = error as AxiosError;
       console.error('❌ HTTP Error:', axiosError.message);
-      
+
       if (axiosError.response) {
         console.error('   Status:', axiosError.response.status);
         console.error('   Data:', JSON.stringify(axiosError.response.data, null, 2));

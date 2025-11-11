@@ -85,7 +85,7 @@ export class YamlShopRepository implements IShopRepository {
         context: env.context,
         dbName: env.db_name,
         dbConfigMap: env.db_config_map,
-        dbSecret: env.db_secret
+        dbSecret: env.db_secret,
       });
     });
 
@@ -93,14 +93,14 @@ export class YamlShopRepository implements IShopRepository {
     const credentials: ShippingCredentials = {
       sagawaDetailId: config.credentials?.sagawa_detail_id || 0,
       yamatoDetailId: config.credentials?.yamato_detail_id || 0,
-      japanPostDetailId: config.credentials?.japan_post_detail_id || 0
+      japanPostDetailId: config.credentials?.japan_post_detail_id || 0,
     };
 
     return Shop.create({
       shopifyShopId: ShopifyShopId.from(config.shopify_shop_id),
       storeId: config.store_id,
       environments,
-      credentials
+      credentials,
     });
   }
 }

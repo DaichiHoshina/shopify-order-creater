@@ -21,18 +21,18 @@ interface LocationData {
 
 // エリアコードマッピング
 const AREA_CODE_MAP: Record<string, string> = {
-  'hokkaido': '01',
+  hokkaido: '01',
   'kita-tohoku': '02',
   'minami-tohoku': '03',
-  'kanto': '04',
-  'shinetsu': '05',
-  'hokuriku': '06',
-  'chubu': '07',
-  'kansai': '08',
-  'chugoku': '09',
-  'shikoku': '10',
-  'kyushu': '11',
-  'okinawa': '12',
+  kanto: '04',
+  shinetsu: '05',
+  hokuriku: '06',
+  chubu: '07',
+  kansai: '08',
+  chugoku: '09',
+  shikoku: '10',
+  kyushu: '11',
+  okinawa: '12',
   'remote-island': '13',
 };
 
@@ -205,7 +205,9 @@ async function main() {
 
   try {
     // Shopify Shop IDを入力
-    const shopifyShopId = await rl.question('📍 Shopify Shop IDを入力してください (例: test-store-1.myshopify.com): ');
+    const shopifyShopId = await rl.question(
+      '📍 Shopify Shop IDを入力してください (例: test-store-1.myshopify.com): '
+    );
 
     if (!shopifyShopId || shopifyShopId.trim() === '') {
       console.log('\n❌ Shopify Shop IDが入力されませんでした。終了します。');
@@ -271,7 +273,7 @@ async function main() {
 }
 
 // スクリプトを実行
-main().catch((error) => {
+main().catch(error => {
   console.error('❌ エラーが発生しました:', error);
   process.exit(1);
 });

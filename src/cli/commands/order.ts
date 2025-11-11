@@ -24,7 +24,7 @@ const AREA_NAME_MAP: Record<string, string> = {
   'shikoku-to-tokyo': '四国',
   'kyushu-to-tokyo': '九州',
   'okinawa-to-tokyo': '沖縄',
-  'remote-island-to-tokyo': '離島'
+  'remote-island-to-tokyo': '離島',
 };
 
 // 13配送元パターンのテンプレートファイル
@@ -123,7 +123,9 @@ export async function createOrders(options: CreateOrdersOptions): Promise<void> 
     // アクセストークン確認
     const accessToken = options.accessToken || process.env.SHOPIFY_ACCESS_TOKEN;
     if (!accessToken) {
-      throw new Error('アクセストークンが設定されていません。--access-token オプションまたは SHOPIFY_ACCESS_TOKEN 環境変数を設定してください。');
+      throw new Error(
+        'アクセストークンが設定されていません。--access-token オプションまたは SHOPIFY_ACCESS_TOKEN 環境変数を設定してください。'
+      );
     }
 
     logger.info(`アクセストークン: ${accessToken.substring(0, 10)}...`);
@@ -216,12 +218,16 @@ export async function createOrders(options: CreateOrdersOptions): Promise<void> 
 
     const results = {
       succeeded: [] as string[],
-      failed: [] as string[]
+      failed: [] as string[],
     };
 
     for (let i = 0; i < templates.length; i++) {
       const templateFile = templates[i];
-      const templatePath = path.join(__dirname, '../../../test-scenarios/consignor-area', templateFile);
+      const templatePath = path.join(
+        __dirname,
+        '../../../test-scenarios/consignor-area',
+        templateFile
+      );
 
       const fileKey = templateFile.replace('.json', '');
       const areaName = AREA_NAME_MAP[fileKey];
@@ -234,30 +240,31 @@ export async function createOrders(options: CreateOrdersOptions): Promise<void> 
         const template: OrderTemplate = JSON.parse(templateContent);
 
         logger.info(`  アイテム数: ${template.order.line_items[0]?.quantity || 0}個`);
-        logger.info(`  配送元: ${template.shipping_metadata.consignor_prefecture} ${template.shipping_metadata.consignor_city}`);
-        logger.info(`  配送先: ${template.order.shipping_address.province} ${template.order.shipping_address.city}`);
+        logger.info(
+          `  配送元: ${template.shipping_metadata.consignor_prefecture} ${template.shipping_metadata.consignor_city}`
+        );
+        logger.info(
+          `  配送先: ${template.order.shipping_address.province} ${template.order.shipping_address.city}`
+        );
 
         // テンプレートデータをShopify API形式に変換
         const orderData = extractOrderData(template);
 
         // Shopify注文を作成
         logger.startSpinner('Shopify注文を作成中...');
-        const result = await createShopifyOrder(
-          storeUrl,
-          accessToken,
-          orderData
-        );
+        const result = await createShopifyOrder(storeUrl, accessToken, orderData);
 
         const orderId = result.data?.orderCreate?.order?.id || 'N/A';
         logger.succeedSpinner(`成功: 注文ID ${orderId}`);
         results.succeeded.push(areaName);
-
       } catch (error) {
         logger.failSpinner(`失敗: ${areaName}`);
         if (error instanceof Error) {
           logger.error(`  エラー: ${error.message}`);
         }
-        results.failed.push(`${areaName} - ${error instanceof Error ? error.message : String(error)}`);
+        results.failed.push(
+          `${areaName} - ${error instanceof Error ? error.message : String(error)}`
+        );
       }
 
       // API レート制限を考慮して10秒待機（最後の注文以外）
@@ -282,7 +289,6 @@ export async function createOrders(options: CreateOrdersOptions): Promise<void> 
     } else {
       logger.success('全ての注文が正常に作成されました！');
     }
-
   } catch (error: any) {
     logger.error(`エラー: ${error.message}`);
     throw error;

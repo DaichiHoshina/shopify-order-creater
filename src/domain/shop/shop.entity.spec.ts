@@ -13,19 +13,22 @@ describe('Shop Entity', () => {
         shopifyShopId: ShopifyShopId.from('81-test-store-plan-silver.myshopify.com'),
         storeId: 404,
         environments: new Map([
-          ['tes', {
-            namespace: 'store',
-            context: 'arn:aws:eks:ap-northeast-1:691177763108:cluster/shopifyshipping-tes-main',
-            dbName: 'store_management',
-            dbConfigMap: 'store-management-env',
-            dbSecret: 'store-management-env'
-          }]
+          [
+            'tes',
+            {
+              namespace: 'store',
+              context: 'arn:aws:eks:ap-northeast-1:691177763108:cluster/shopifyshipping-tes-main',
+              dbName: 'store_management',
+              dbConfigMap: 'store-management-env',
+              dbSecret: 'store-management-env',
+            },
+          ],
         ]),
         credentials: {
           sagawaDetailId: 556,
           yamatoDetailId: 528,
-          japanPostDetailId: 0
-        }
+          japanPostDetailId: 0,
+        },
       });
 
       expect(shop.getShopifyShopId().toString()).toBe('81-test-store-plan-silver.myshopify.com');
@@ -40,29 +43,33 @@ describe('Shop Entity', () => {
         credentials: {
           sagawaDetailId: 0,
           yamatoDetailId: 0,
-          japanPostDetailId: 0
-        }
+          japanPostDetailId: 0,
+        },
       });
 
       expect(shop.hasTestCredentials()).toBe(false);
     });
 
     it('should throw error for negative store ID', () => {
-      expect(() => Shop.create({
-        shopifyShopId: ShopifyShopId.from('example.myshopify.com'),
-        storeId: -1,
-        environments: new Map(),
-        credentials: { sagawaDetailId: 0, yamatoDetailId: 0, japanPostDetailId: 0 }
-      })).toThrow('Store ID must be a positive number');
+      expect(() =>
+        Shop.create({
+          shopifyShopId: ShopifyShopId.from('example.myshopify.com'),
+          storeId: -1,
+          environments: new Map(),
+          credentials: { sagawaDetailId: 0, yamatoDetailId: 0, japanPostDetailId: 0 },
+        })
+      ).toThrow('Store ID must be a positive number');
     });
 
     it('should throw error for zero store ID', () => {
-      expect(() => Shop.create({
-        shopifyShopId: ShopifyShopId.from('example.myshopify.com'),
-        storeId: 0,
-        environments: new Map(),
-        credentials: { sagawaDetailId: 0, yamatoDetailId: 0, japanPostDetailId: 0 }
-      })).toThrow('Store ID must be a positive number');
+      expect(() =>
+        Shop.create({
+          shopifyShopId: ShopifyShopId.from('example.myshopify.com'),
+          storeId: 0,
+          environments: new Map(),
+          credentials: { sagawaDetailId: 0, yamatoDetailId: 0, japanPostDetailId: 0 },
+        })
+      ).toThrow('Store ID must be a positive number');
     });
   });
 
@@ -72,15 +79,18 @@ describe('Shop Entity', () => {
         shopifyShopId: ShopifyShopId.from('example.myshopify.com'),
         storeId: 100,
         environments: new Map([
-          ['tes', {
-            namespace: 'store',
-            context: 'test-context',
-            dbName: 'store_management',
-            dbConfigMap: 'store-env',
-            dbSecret: 'store-secret'
-          }]
+          [
+            'tes',
+            {
+              namespace: 'store',
+              context: 'test-context',
+              dbName: 'store_management',
+              dbConfigMap: 'store-env',
+              dbSecret: 'store-secret',
+            },
+          ],
         ]),
-        credentials: { sagawaDetailId: 0, yamatoDetailId: 0, japanPostDetailId: 0 }
+        credentials: { sagawaDetailId: 0, yamatoDetailId: 0, japanPostDetailId: 0 },
       });
 
       const env = shop.getEnvironment('tes');
@@ -93,7 +103,7 @@ describe('Shop Entity', () => {
         shopifyShopId: ShopifyShopId.from('example.myshopify.com'),
         storeId: 100,
         environments: new Map(),
-        credentials: { sagawaDetailId: 0, yamatoDetailId: 0, japanPostDetailId: 0 }
+        credentials: { sagawaDetailId: 0, yamatoDetailId: 0, japanPostDetailId: 0 },
       });
 
       expect(() => shop.getEnvironment('prod')).toThrow('Environment "prod" not found');
@@ -109,8 +119,8 @@ describe('Shop Entity', () => {
         credentials: {
           sagawaDetailId: 556,
           yamatoDetailId: 0,
-          japanPostDetailId: 0
-        }
+          japanPostDetailId: 0,
+        },
       });
 
       expect(shop.hasTestCredentials()).toBe(true);
@@ -124,8 +134,8 @@ describe('Shop Entity', () => {
         credentials: {
           sagawaDetailId: 0,
           yamatoDetailId: 0,
-          japanPostDetailId: 0
-        }
+          japanPostDetailId: 0,
+        },
       });
 
       expect(shop.hasTestCredentials()).toBe(false);
@@ -141,8 +151,8 @@ describe('Shop Entity', () => {
         credentials: {
           sagawaDetailId: 556,
           yamatoDetailId: 528,
-          japanPostDetailId: 100
-        }
+          japanPostDetailId: 100,
+        },
       });
 
       const credentials = shop.getCredentials();
@@ -158,15 +168,18 @@ describe('Shop Entity', () => {
         shopifyShopId: ShopifyShopId.from('example.myshopify.com'),
         storeId: 100,
         environments: new Map([
-          ['tes', {
-            namespace: 'store',
-            context: 'test-context',
-            dbName: 'store_management',
-            dbConfigMap: 'store-env',
-            dbSecret: 'store-secret'
-          }]
+          [
+            'tes',
+            {
+              namespace: 'store',
+              context: 'test-context',
+              dbName: 'store_management',
+              dbConfigMap: 'store-env',
+              dbSecret: 'store-secret',
+            },
+          ],
         ]),
-        credentials: { sagawaDetailId: 0, yamatoDetailId: 0, japanPostDetailId: 0 }
+        credentials: { sagawaDetailId: 0, yamatoDetailId: 0, japanPostDetailId: 0 },
       });
 
       expect(shop.hasEnvironment('tes')).toBe(true);

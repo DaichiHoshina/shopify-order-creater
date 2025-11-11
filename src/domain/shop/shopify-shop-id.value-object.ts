@@ -42,7 +42,9 @@ export class ShopifyShopId {
 
     // ショップ名の形式チェック（小文字の英字、数字、ハイフンのみ）
     if (!/^[a-z0-9-]+$/.test(shopName)) {
-      throw new Error('Invalid Shopify Shop ID: shop name must contain only lowercase letters, numbers, and hyphens');
+      throw new Error(
+        'Invalid Shopify Shop ID: shop name must contain only lowercase letters, numbers, and hyphens'
+      );
     }
 
     return new ShopifyShopId(trimmed);

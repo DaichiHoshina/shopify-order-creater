@@ -15,10 +15,7 @@ import { IShopRepository } from '../../domain/shop/shop.repository';
 import { ILocationRepository } from '../../domain/consignor/location.repository';
 import { IConsignorRepository } from '../../domain/consignor/consignor.repository';
 import { Consignor } from '../../domain/consignor/consignor.entity';
-import {
-  DeployConsignorInput,
-  DeployConsignorOutput
-} from './deploy-consignor.dto';
+import { DeployConsignorInput, DeployConsignorOutput } from './deploy-consignor.dto';
 
 export class DeployConsignorUseCase {
   constructor(
@@ -42,10 +39,7 @@ export class DeployConsignorUseCase {
     });
 
     // 4. Kubernetes DBにデプロイ
-    const deployResult = await this.consignorRepository.deploy(
-      consignors,
-      input.environment
-    );
+    const deployResult = await this.consignorRepository.deploy(consignors, input.environment);
 
     // 5. 結果を返す
     return {

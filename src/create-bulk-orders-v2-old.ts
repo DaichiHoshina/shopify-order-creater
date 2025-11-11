@@ -20,7 +20,7 @@ const UNIFIED_CONSIGNOR = {
   zip: '135-0061',
   prefecture: '東京都',
   city: '江東区',
-  address: '豊洲３丁目３−３ 豊洲センタービル'
+  address: '豊洲３丁目３−３ 豊洲センタービル',
 };
 
 // エリア名マッピング
@@ -37,7 +37,7 @@ const AREA_NAME_MAP: Record<string, string> = {
   'shikoku-to-tokyo': '四国',
   'kyushu-to-tokyo': '九州',
   'okinawa-to-tokyo': '沖縄',
-  'remote-island-to-tokyo': '離島'
+  'remote-island-to-tokyo': '離島',
 };
 
 // 13配送元パターンのテンプレートファイル
@@ -113,12 +113,14 @@ interface OrderTemplate {
 }
 
 async function createBulkOrders(): Promise<void> {
-  console.log('🚀 13配送元パターンの一括注文作成を開始します（v2: 100個アイテム + 配送元タグ + 統一住所）\n');
+  console.log(
+    '🚀 13配送元パターンの一括注文作成を開始します（v2: 100個アイテム + 配送元タグ + 統一住所）\n'
+  );
   console.log(`📦 対象ストア: ${SHOPIFY_STORE_URL}\n`);
 
   const results = {
     succeeded: [] as string[],
-    failed: [] as string[]
+    failed: [] as string[],
   };
 
   for (let i = 0; i < TEMPLATE_FILES.length; i++) {
@@ -145,30 +147,31 @@ async function createBulkOrders(): Promise<void> {
       console.log(`   ✅ テンプレート確認完了`);
       console.log(`      - アイテム数: ${template.order.line_items[0]?.quantity || 0}個`);
       console.log(`      - タグ: ${template.order.tags}`);
-      console.log(`      - 配送元: ${template.shipping_metadata.consignor_prefecture} ${template.shipping_metadata.consignor_city}`);
-      console.log(`      - 配送先: ${template.order.shipping_address.province} ${template.order.shipping_address.city}`);
+      console.log(
+        `      - 配送元: ${template.shipping_metadata.consignor_prefecture} ${template.shipping_metadata.consignor_city}`
+      );
+      console.log(
+        `      - 配送先: ${template.order.shipping_address.province} ${template.order.shipping_address.city}`
+      );
 
       // テンプレートデータをShopify API形式に変換
       const orderData = extractOrderData(template);
 
       // Shopify注文を作成
       console.log(`   🔄 Shopify注文を作成中...`);
-      const result = await createShopifyOrder(
-        SHOPIFY_STORE_URL!,
-        SHOPIFY_ACCESS_TOKEN!,
-        orderData
-      );
+      const result = await createShopifyOrder(SHOPIFY_STORE_URL!, SHOPIFY_ACCESS_TOKEN!, orderData);
 
       const orderId = result.data?.orderCreate?.order?.id || 'N/A';
       console.log(`   ✅ 成功: 注文ID ${orderId}`);
       results.succeeded.push(`${areaName} (${templateFile})`);
-
     } catch (error) {
       console.error(`   ❌ 失敗: ${templateFile}`);
       if (error instanceof Error) {
         console.error(`      エラー: ${error.message}`);
       }
-      results.failed.push(`${templateFile} - ${error instanceof Error ? error.message : String(error)}`);
+      results.failed.push(
+        `${templateFile} - ${error instanceof Error ? error.message : String(error)}`
+      );
     }
 
     // API レート制限を考慮して10秒待機（最後の注文以外）
@@ -200,7 +203,7 @@ createBulkOrders()
     console.log('✨ 処理が完了しました');
     process.exit(0);
   })
-  .catch((error) => {
+  .catch(error => {
     console.error('❌ エラーが発生しました:', error);
     process.exit(1);
   });

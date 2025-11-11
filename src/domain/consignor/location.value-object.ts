@@ -77,8 +77,7 @@ export class Location {
    * 郵便番号と都道府県が同じであれば同一とみなす
    */
   equals(other: Location): boolean {
-    return this.postalCode.equals(other.postalCode) &&
-           this.prefecture.equals(other.prefecture);
+    return this.postalCode.equals(other.postalCode) && this.prefecture.equals(other.prefecture);
   }
 
   /**
